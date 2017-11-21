@@ -34,3 +34,5 @@ RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     pdo \
     pgsql \
     pdo_pgsql
+
+ONBUILD RUN apk add --no-cache composer
