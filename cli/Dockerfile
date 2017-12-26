@@ -30,3 +30,6 @@ RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     pdo \
     pgsql \
     pdo_pgsql
+
+ENTRYPOINT ["docker-php-entrypoint"]
+CMD ["php", "-a"]
