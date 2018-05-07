@@ -15,7 +15,8 @@ RUN apk add --no-cache --virtual .ext-configure \
     openssl-dev \
     icu-dev \
     libmcrypt-dev \
-    postgresql-dev
+    postgresql-dev \
+    pcre-dev
 
 RUN apk add --no-cache --virtual .ext-deps \
     freetype \
@@ -33,6 +34,9 @@ RUN NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     zip \
     pdo \
     pgsql \
-    pdo_pgsql
+    pdo_pgsql \
+    opcache
+
+ADD opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 CMD ["php-fpm"]
