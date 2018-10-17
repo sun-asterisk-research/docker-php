@@ -1,4 +1,4 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.2-cli-alpine
 
 LABEL maintainer="1@grep.su"
 
@@ -25,16 +25,14 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
         opcache \
     && apk del .build-deps
 
-# mongodb extension
-# May be move this to the previous layer and share `.phpize-deps` with `docker-php-ext-install`
-# so we don't have to install it again
-RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
-    && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
-    && apk del .phpize-deps
+RUN apk add --no-cache gettext
+RUN mkdir /tmp/php-opcache
 
-# Config files
-COPY config/php.ini /usr/local/etc/php/
-COPY config/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY config /tmp/php-conf
+COPY docker-entrypoint.sh /usr/local/bin
 
-CMD ["php-fpm"]
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
+
+ENTRYPOINT [ "docker-entrypoint.sh" ]
+
+CMD ["php", "-a"]

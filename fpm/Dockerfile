@@ -12,9 +12,9 @@ ENV BUILD_DEPS \
     postgresql-dev \
     zlib-dev
 
+# PHP extensions
 RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
 
-# PHP extensions
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     && docker-php-ext-install -j${NPROC} \
@@ -25,8 +25,22 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
         opcache \
     && apk del .build-deps
 
+RUN apk add --no-cache fcgi gettext
+
+ENV PM_MODE=ondemand \
+    PM_MAX_CHILDREN=40 \
+    PM_START_SERVERS=15 \
+    PM_MIN_SPARE_SERVERS=15 \
+    PM_MAX_SPARE_SERVERS=25 \
+    PM_PROCESS_IDLE_TIMEOUT=10s \
+    OPCACHE_VALIDATE_TIMESTAMPS=1
+
 # Config files
-COPY config/php.ini /usr/local/etc/php/
-COPY config/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+COPY config /tmp/php-conf
+COPY php-fpm /tmp/php-fpm
+
+COPY docker-entrypoint.sh php-fpm-healthcheck /usr/local/bin/
+
+ENTRYPOINT [ "docker-entrypoint.sh" ]
 
 CMD ["php-fpm"]
