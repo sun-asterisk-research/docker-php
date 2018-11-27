@@ -12,17 +12,19 @@ ENV BUILD_DEPS \
     postgresql-dev \
     zlib-dev
 
+ENV PHP_EXTENSIONS \
+    opcache \
+    zip \
+    intl \
+    pgsql \
+    pdo_pgsql
+
 RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
 
 # PHP extensions
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
-    && docker-php-ext-install -j${NPROC} \
-        intl \
-        zip \
-        pgsql \
-        pdo_pgsql \
-        opcache \
+    && docker-php-ext-install -j${NPROC} $PHP_EXTENSIONS \
     && apk del .build-deps
 
 RUN apk add --no-cache gettext

@@ -12,26 +12,20 @@ ENV BUILD_DEPS \
     postgresql-dev \
     zlib-dev
 
+ENV PHP_EXTENSIONS \
+    opcache \
+    zip \
+    intl \
+    pgsql \
+    pdo_pgsql
+
 # PHP extensions
 RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
 
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
-    && docker-php-ext-install -j${NPROC} \
-        intl \
-        zip \
-        pgsql \
-        pdo_pgsql \
-        opcache \
+    && docker-php-ext-install -j${NPROC} $PHP_EXTENSIONS \
     && apk del .build-deps
-
-# mongodb extension
-# May be move this to the previous layer and share `.phpize-deps` with `docker-php-ext-install`
-# so we don't have to install it again
-RUN apk add --no-cache --virtual .phpize-deps $PHPIZE_DEPS \
-    && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
-    && apk del .phpize-deps
 
 RUN apk add --no-cache fcgi gettext
 
@@ -46,8 +40,6 @@ ENV PM_MODE=ondemand \
 # Config files
 COPY config /tmp/php-conf
 COPY php-fpm /tmp/php-fpm
-
-COPY config docker-entrypoint.sh /
 
 COPY docker-entrypoint.sh php-fpm-healthcheck /usr/local/bin/
 
