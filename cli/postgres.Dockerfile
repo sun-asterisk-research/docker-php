@@ -28,7 +28,6 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && apk del .build-deps
 
 RUN apk add --no-cache gettext
-RUN mkdir /tmp/php-opcache
 
 COPY config /tmp/php-conf
 COPY docker-entrypoint.sh /usr/local/bin
