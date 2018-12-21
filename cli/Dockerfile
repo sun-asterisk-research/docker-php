@@ -1,21 +1,24 @@
 FROM php:7.2-cli-alpine
 
-LABEL maintainer="1@grep.su"
-
 ENV EXTENSION_DEPS \
-    icu-libs \
-    zlib
+    zlib \
+    libpng \
+    postgresql-libs
 
 ENV BUILD_DEPS \
-    icu-dev \
-    zlib-dev
+    zlib-dev \
+    libpng-dev \
+    postgresql-dev
 
 ENV PHP_EXTENSIONS \
     opcache \
     zip \
-    intl \
+    gd \
+    bcmath \
     mysqli \
-    pdo_mysql
+    pdo_mysql \
+    pgsql \
+    pdo_pgsql
 
 RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
 
