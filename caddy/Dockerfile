@@ -1,14 +1,16 @@
 FROM abiosoft/caddy:no-stats as caddy
 
-FROM php:7.2-fpm-alpine
+FROM php:7.3-fpm-alpine
 
 ENV EXTENSION_DEPS \
     zlib \
+    libzip \
     libpng \
     postgresql-libs
 
 ENV BUILD_DEPS \
     zlib-dev \
+    libzip-dev \
     libpng-dev \
     postgresql-dev
 
@@ -22,14 +24,12 @@ ENV PHP_EXTENSIONS \
     pgsql \
     pdo_pgsql
 
-# PHP extensions
-RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
-
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
     && docker-php-ext-install -j${NPROC} $PHP_EXTENSIONS \
     && apk del .build-deps
 
+RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
 RUN apk add --no-cache gettext
 
 ENV PM_MODE=ondemand \
