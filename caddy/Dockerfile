@@ -6,12 +6,14 @@ ENV EXTENSION_DEPS \
     zlib \
     libzip \
     libpng \
+    libjpeg-turbo \
     postgresql-libs
 
 ENV BUILD_DEPS \
     zlib-dev \
     libzip-dev \
     libpng-dev \
+    libjpeg-turbo-dev \
     postgresql-dev
 
 ENV PHP_EXTENSIONS \
@@ -25,8 +27,8 @@ ENV PHP_EXTENSIONS \
     pdo_pgsql
 
 RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
-    && NPROC=$(grep -c ^processor /proc/cpuinfo 2>/dev/null || 1) \
-    && docker-php-ext-install -j${NPROC} $PHP_EXTENSIONS \
+    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include \
+    && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
     && apk del .build-deps
 
 RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
