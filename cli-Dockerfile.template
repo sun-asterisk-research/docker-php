@@ -1,0 +1,8 @@
+COPY config /tmp/php-conf
+COPY php-cli-entrypoint /usr/local/bin
+
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
+
+ENTRYPOINT [ "php-cli-entrypoint" ]
+
+CMD ["php", "-a"]

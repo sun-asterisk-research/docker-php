@@ -1,13 +1,16 @@
+# Generated via generate.sh. Please don't edit directly
+
 FROM abiosoft/caddy:no-stats as caddy
 
 FROM php:7.3-fpm-alpine
 
-ENV EXTENSION_DEPS \
+ENV RUN_DEPS \
     zlib \
     libzip \
     libpng \
     libjpeg-turbo \
-    postgresql-libs
+    postgresql-libs \
+    gettext
 
 ENV BUILD_DEPS \
     zlib-dev \
@@ -31,8 +34,7 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
     && apk del .build-deps
 
-RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
-RUN apk add --no-cache gettext
+RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
 ENV PM_MODE=ondemand \
     PM_MAX_CHILDREN=40 \
@@ -42,7 +44,6 @@ ENV PM_MODE=ondemand \
     PM_PROCESS_IDLE_TIMEOUT=10s \
     OPCACHE_VALIDATE_TIMESTAMPS=1
 
-# Config files
 COPY config /tmp/php-conf
 COPY php-fpm /tmp/php-fpm
 
@@ -50,10 +51,10 @@ COPY --from=caddy /bin/parent /bin/parent
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
 COPY Caddyfile /etc/Caddyfile
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY php-caddy-entrypoint /usr/local/bin/
 
 EXPOSE 2015
 
-ENTRYPOINT [ "docker-entrypoint.sh" ]
+ENTRYPOINT [ "php-caddy-entrypoint" ]
 
 CMD ["--conf", "/etc/Caddyfile", "--agree"]

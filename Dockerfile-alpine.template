@@ -1,11 +1,12 @@
-FROM php:7.3-cli-alpine
+FROM php:%%version%%-%%variant%%-alpine
 
-ENV EXTENSION_DEPS \
+ENV RUN_DEPS \
     zlib \
     libzip \
     libpng \
     libjpeg-turbo \
-    postgresql-libs
+    postgresql-libs \
+    gettext
 
 ENV BUILD_DEPS \
     zlib-dev \
@@ -29,14 +30,5 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
     && apk del .build-deps
 
-RUN apk add --no-cache --virtual .extension-deps $EXTENSION_DEPS
-RUN apk add --no-cache gettext
+RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
-COPY config /tmp/php-conf
-COPY docker-entrypoint.sh /usr/local/bin
-
-ENV OPCACHE_VALIDATE_TIMESTAMPS=1
-
-ENTRYPOINT [ "docker-entrypoint.sh" ]
-
-CMD ["php", "-a"]
