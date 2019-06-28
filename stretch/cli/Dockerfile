@@ -34,7 +34,7 @@ RUN apt-get update \
     && apt-get purge -y --autoremove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
-COPY config /tmp/php-conf
+COPY config /usr/local/etc/php/conf.d
 COPY php-cli-entrypoint /usr/local/bin
 
 ENV OPCACHE_VALIDATE_TIMESTAMPS=1

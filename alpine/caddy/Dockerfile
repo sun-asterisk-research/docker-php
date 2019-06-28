@@ -36,16 +36,8 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
-ENV PM_MODE=ondemand \
-    PM_MAX_CHILDREN=40 \
-    PM_START_SERVERS=15 \
-    PM_MIN_SPARE_SERVERS=15 \
-    PM_MAX_SPARE_SERVERS=25 \
-    PM_PROCESS_IDLE_TIMEOUT=10s \
-    OPCACHE_VALIDATE_TIMESTAMPS=1
-
-COPY config /tmp/php-conf
-COPY php-fpm /tmp/php-fpm
+COPY config /usr/local/etc/php/conf.d
+COPY php-fpm /usr/local/etc/php-fpm.d
 
 COPY --from=caddy /bin/parent /bin/parent
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy

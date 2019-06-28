@@ -2,12 +2,15 @@
 
 set -e
 
-write_configs() {
-    for f in $(find $1 -regex ".*$2\$"); do
-        envsubst < $f > "$3/$(basename $f)"
+read_env_config() {
+    prefix=$1
+    output=$2
+
+    env | grep -E "^$prefix\..+=.+" | while IFS='=' read -r config_name config_value; do
+        echo "${config_name#*.} = $config_value" >> $output
     done
 }
 
-write_configs /tmp/php-conf .ini /usr/local/etc/php/conf.d
+read_env_config PHP $PHP_INI_DIR/conf.d/zz-docker-env.ini
 
 exec docker-php-entrypoint "$@"

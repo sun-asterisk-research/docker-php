@@ -34,7 +34,7 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
-COPY config /tmp/php-conf
+COPY config /usr/local/etc/php/conf.d
 COPY php-cli-entrypoint /usr/local/bin
 
 ENV OPCACHE_VALIDATE_TIMESTAMPS=1
