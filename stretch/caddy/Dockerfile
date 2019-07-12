@@ -9,8 +9,7 @@ ENV RUN_DEPS \
     libzip4 \
     libpng16-16 \
     libjpeg62-turbo \
-    libpq5 \
-    gettext
+    libpq5
 
 ENV BUILD_DEPS \
     zlib1g-dev \

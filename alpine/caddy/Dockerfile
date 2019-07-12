@@ -9,8 +9,7 @@ ENV RUN_DEPS \
     libzip \
     libpng \
     libjpeg-turbo \
-    postgresql-libs \
-    gettext
+    postgresql-libs
 
 ENV BUILD_DEPS \
     zlib-dev \
