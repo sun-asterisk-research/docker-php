@@ -22,6 +22,16 @@ else
     distro=alpine
 fi
 
+write_shebang() {
+    if [ "$distro" = debian ]; then
+        shebang="#!/bin/bash"
+    else
+        shebang="#!/bin/sh"
+    fi
+
+    sed -i "1i$shebang\n" $1
+}
+
 dir="$suite/$variant"
 dockerfile="$dir/Dockerfile"
 
@@ -52,11 +62,13 @@ cat "$variant-Dockerfile.template" >> $dockerfile
 # PHP configs
 cp -rT "config/$php_variant" "$dir/config"
 cp "php-$variant-entrypoint" "$dir"
+write_shebang "$dir/php-$variant-entrypoint"
 
 # php-fpm pool config
 if [ "$php_variant" = fpm ]; then
     cp -rT php-fpm "$dir/php-fpm"
     cp php-fpm-healthcheck "$dir"
+    write_shebang "$dir/php-fpm-healthcheck"
 fi
 
 # Caddyfile for caddy

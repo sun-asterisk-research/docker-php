@@ -1,5 +1,3 @@
-#!/bin/sh
-
 set -e
 
 read_env_config() {

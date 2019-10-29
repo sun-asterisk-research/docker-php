@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 export SCRIPT_NAME="/ping"
 export SCRIPT_FILENAME="/ping"

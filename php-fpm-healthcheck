@@ -1,5 +1,3 @@
-#!/bin/sh
-
 export SCRIPT_NAME="/ping"
 export SCRIPT_FILENAME="/ping"
 export REQUEST_METHOD="GET"
