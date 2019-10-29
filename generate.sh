@@ -67,6 +67,9 @@ write_shebang "$dir/php-$variant-entrypoint"
 # php-fpm pool config
 if [ "$php_variant" = fpm ]; then
     cp -rT php-fpm "$dir/php-fpm"
+fi
+
+if [ "$variant" = fpm ]; then
     cp php-fpm-healthcheck "$dir"
     write_shebang "$dir/php-fpm-healthcheck"
 fi
