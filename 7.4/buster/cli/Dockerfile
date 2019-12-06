@@ -1,4 +1,6 @@
-FROM php:%%version%%-%%variant%%-%%debian_suite%%
+# Generated via generate.sh. Please don't edit directly
+
+FROM php:7.4-cli-buster
 
 ENV RUN_DEPS \
     zlib1g \
@@ -31,3 +33,11 @@ RUN apt-get update \
     && apt-get purge -y --autoremove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
+COPY config /usr/local/etc/php/conf.d
+COPY php-cli-entrypoint /usr/local/bin
+
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
+
+ENTRYPOINT [ "php-cli-entrypoint" ]
+
+CMD ["php", "-a"]

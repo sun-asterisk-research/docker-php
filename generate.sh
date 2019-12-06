@@ -32,7 +32,7 @@ write_shebang() {
     sed -i "1i$shebang\n" $1
 }
 
-dir="$suite/$variant"
+dir="$php_version/$suite/$variant"
 dockerfile="$dir/Dockerfile"
 
 mkdir -p "$dir"
@@ -45,11 +45,20 @@ if [ "$variant" = caddy ]; then
 fi
 
 # Base Dockerfile
-sed -r \
-    -e "s!%%version%%!$php_version!" \
-    -e "s!%%variant%%!$php_variant!" \
-    -e "s!%%debian_suite%%!$DEBIAN_SUITE!" \
-    "Dockerfile-$distro.template" >> $dockerfile
+if [ "$php_version" \< 7.4 ]; then
+    sed -r \
+        -e "s!%%version%%!$php_version!" \
+        -e "s!%%variant%%!$php_variant!" \
+        -e "s!%%debian_suite%%!$DEBIAN_SUITE!" \
+        -e "s!--with-jpeg!--with-jpeg-dir=/usr/include!" \
+        "Dockerfile-$distro.template" >> $dockerfile
+else
+    sed -r \
+        -e "s!%%version%%!$php_version!" \
+        -e "s!%%variant%%!$php_variant!" \
+        -e "s!%%debian_suite%%!$DEBIAN_SUITE!" \
+        "Dockerfile-$distro.template" >> $dockerfile
+fi
 
 # fcgi for php-fpm healthcheck
 if [ "$variant" = fpm ]; then

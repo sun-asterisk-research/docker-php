@@ -1,4 +1,6 @@
-FROM php:%%version%%-%%variant%%-alpine
+# Generated via generate.sh. Please don't edit directly
+
+FROM php:7.4-cli-alpine
 
 ENV RUN_DEPS \
     zlib \
@@ -31,3 +33,11 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
+COPY config /usr/local/etc/php/conf.d
+COPY php-cli-entrypoint /usr/local/bin
+
+ENV OPCACHE_VALIDATE_TIMESTAMPS=1
+
+ENTRYPOINT [ "php-cli-entrypoint" ]
+
+CMD ["php", "-a"]

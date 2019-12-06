@@ -1,4 +1,6 @@
-FROM php:%%version%%-%%variant%%-%%debian_suite%%
+# Generated via generate.sh. Please don't edit directly
+
+FROM php:7.4-fpm-buster
 
 ENV RUN_DEPS \
     zlib1g \
@@ -31,3 +33,15 @@ RUN apt-get update \
     && apt-get purge -y --autoremove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update \
+    && apt-get install -y fcgiwrap \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY config /usr/local/etc/php/conf.d
+COPY php-fpm /usr/local/etc/php-fpm.d
+
+COPY php-fpm-entrypoint php-fpm-healthcheck /usr/local/bin/
+
+ENTRYPOINT [ "php-fpm-entrypoint" ]
+
+CMD ["php-fpm"]

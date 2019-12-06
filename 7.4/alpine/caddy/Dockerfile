@@ -1,4 +1,8 @@
-FROM php:%%version%%-%%variant%%-alpine
+# Generated via generate.sh. Please don't edit directly
+
+FROM abiosoft/caddy:no-stats as caddy
+
+FROM php:7.4-fpm-alpine
 
 ENV RUN_DEPS \
     zlib \
@@ -31,3 +35,17 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
+COPY config /usr/local/etc/php/conf.d
+COPY php-fpm /usr/local/etc/php-fpm.d
+
+COPY --from=caddy /bin/parent /bin/parent
+COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
+COPY Caddyfile /etc/Caddyfile
+
+COPY php-caddy-entrypoint /usr/local/bin/
+
+EXPOSE 2015
+
+ENTRYPOINT [ "php-caddy-entrypoint" ]
+
+CMD ["--conf", "/etc/Caddyfile", "--agree"]

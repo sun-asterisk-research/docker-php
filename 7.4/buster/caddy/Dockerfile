@@ -1,4 +1,8 @@
-FROM php:%%version%%-%%variant%%-%%debian_suite%%
+# Generated via generate.sh. Please don't edit directly
+
+FROM abiosoft/caddy:no-stats as caddy
+
+FROM php:7.4-fpm-buster
 
 ENV RUN_DEPS \
     zlib1g \
@@ -31,3 +35,17 @@ RUN apt-get update \
     && apt-get purge -y --autoremove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
 
+COPY config /usr/local/etc/php/conf.d
+COPY php-fpm /usr/local/etc/php-fpm.d
+
+COPY --from=caddy /bin/parent /bin/parent
+COPY --from=caddy /usr/bin/caddy /usr/bin/caddy
+COPY Caddyfile /etc/Caddyfile
+
+COPY php-caddy-entrypoint /usr/local/bin/
+
+EXPOSE 2015
+
+ENTRYPOINT [ "php-caddy-entrypoint" ]
+
+CMD ["--conf", "/etc/Caddyfile", "--agree"]
