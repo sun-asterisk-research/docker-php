@@ -7,26 +7,29 @@ DEBIAN_IMAGES=$(PHP_VERSION)-cli-$(DEBIAN_SUITE) $(PHP_VERSION)-fpm-$(DEBIAN_SUI
 IMAGES=$(ALPINE_IMAGES) $(DEBIAN_IMAGES)
 
 $(ALPINE_IMAGES):
-	@echo "Generating viblo/php:$@"
+	@echo "Generating sunasteriskrnd/php:$@"
 	@./generate.sh $$(echo $@ | awk -F '-' '{print $$1" "$$2" "$$3}')
 
 $(DEBIAN_IMAGES):
-	@echo "Generating viblo/php:$@"
+	@echo "Generating sunasteriskrnd/php:$@"
 	@DEBIAN_SUITE=$(DEBIAN_SUITE) ./generate.sh $$(echo $@ | awk -F '-' '{print $$1" "$$2" "$$3}')
 
 alpine: $(ALPINE_IMAGES)
 
 debian $(DEBIAN_SUITE): $(DEBIAN_IMAGES)
 
-all: alpine debian
+all:
+	@for version in 7.3 7.4; do \
+		PHP_VERSION=$$version $(MAKE) -s alpine debian; \
+	done
 
 docker-build:
-	@echo "Building image viblo/php:$$image"
+	@echo "Building image sunasteriskrnd/php:$$image"
 	@ctx=$$(echo $$image | awk -F '-' '{if($$3){print $$1"/"$$3"/"$$2}else if($$2){print $(PHP_VERSION)/$$2"/"$$1}else{print "$(PHP_VERSION)/alpine/"$$1}}') && \
-	docker build $$ctx -t viblo/php:$$image
+	docker build $$ctx -t sunasteriskrnd/php:$$image
 
 clean:
 	rm -rf $(PHP_VERSION)
-	docker ps -qf ancestor=viblo/php | xargs -r docker kill
-	docker ps -aqf ancestor=viblo/php | xargs -r docker rm
-	docker images -q viblo/php | xargs -r docker rmi -f
+	docker ps -qf ancestor=sunasteriskrnd/php | xargs -r docker kill
+	docker ps -aqf ancestor=sunasteriskrnd/php | xargs -r docker rm
+	docker images -q sunasteriskrnd/php | xargs -r docker rmi -f
