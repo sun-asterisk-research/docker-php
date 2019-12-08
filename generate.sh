@@ -2,7 +2,7 @@
 
 set -e
 
-latest=alpine
+latest=7.4
 main_variant=cli
 main_suite=alpine
 
@@ -91,13 +91,37 @@ fi
 # Docker Hub push hook
 mkdir -p "$dir/hooks"
 
-variant_tag="$variant-$suite"
+[ "$suite" == "$main_suite" ] && is_main_suite=true
+[ "$variant" == "$main_variant" ] && is_main_variant=true
 
-tags="$variant_tag $php_version-$variant_tag"
-test "$suite" == "$main_suite" && tags="$php_version-$variant $tags"
-test "$suite" == "$main_suite" && test "$variant" == "$main_variant" && tags="$php_version $tags"
-test "$suite" == "$latest" && tags="$variant $tags"
-test "$variant" == "$main_variant" && tags="$suite $tags"
-test "$suite" == "$latest" && test "$variant" = "$main_variant" && tags="latest $tags"
+tags="$php_version-$variant-$suite"
+
+if [ "$is_main_variant" ]; then
+    tags="$php_version-$suite $tags"
+fi
+
+if [ "$is_main_suite" ]; then
+    tags="$php_version-$variant $tags"
+fi
+
+if [ "$is_main_variant" ] && [ "$is_main_suite" ]; then
+    tags="$php_version $tags"
+fi
+
+if [ "$php_version" == "$latest" ]; then
+    tags="$variant-$suite $tags"
+
+    if [ "$is_main_variant" ]; then
+        tags="$suite $tags"
+    fi
+
+    if [ "$is_main_suite" ]; then
+        tags="$variant $tags"
+    fi
+
+    if [ "$is_main_variant" ] && [ "$is_main_suite" ]; then
+        tags="latest $tags"
+    fi
+fi
 
 sed "s!%%tags%%!$tags!" push.template > "$dir/hooks/push"

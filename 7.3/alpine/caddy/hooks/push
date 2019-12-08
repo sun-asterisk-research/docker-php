@@ -2,7 +2,7 @@
 
 set -e
 
-for tag in caddy 7.3-caddy caddy-alpine 7.3-caddy-alpine; do
+for tag in 7.3-caddy 7.3-caddy-alpine; do
     docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
     docker push "$DOCKER_REPO:$tag"
 done

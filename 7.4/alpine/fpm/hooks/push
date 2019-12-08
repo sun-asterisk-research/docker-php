@@ -2,7 +2,7 @@
 
 set -e
 
-for tag in fpm 7.4-fpm fpm-alpine 7.4-fpm-alpine; do
+for tag in fpm fpm-alpine 7.4-fpm 7.4-fpm-alpine; do
     docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
     docker push "$DOCKER_REPO:$tag"
 done

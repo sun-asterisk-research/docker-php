@@ -2,7 +2,7 @@
 
 set -e
 
-for tag in fpm-buster 7.3-fpm-buster; do
+for tag in 7.3-fpm-buster; do
     docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
     docker push "$DOCKER_REPO:$tag"
 done

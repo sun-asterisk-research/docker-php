@@ -2,7 +2,7 @@
 
 set -e
 
-for tag in buster cli-buster 7.4-cli-buster; do
+for tag in buster cli-buster 7.4-buster 7.4-cli-buster; do
     docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
     docker push "$DOCKER_REPO:$tag"
 done

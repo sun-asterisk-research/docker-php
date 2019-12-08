@@ -2,7 +2,7 @@
 
 set -e
 
-for tag in latest alpine cli 7.4 7.4-cli cli-alpine 7.4-cli-alpine; do
+for tag in latest cli alpine cli-alpine 7.4 7.4-cli 7.4-alpine 7.4-cli-alpine; do
     docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
     docker push "$DOCKER_REPO:$tag"
 done
