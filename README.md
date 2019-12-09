@@ -2,20 +2,26 @@
 
 PHP images based on the [official image](https://hub.docker.com/_/php/) with support for PostgreSQL, MySQL, some common extensions & configurable via environment variables.
 
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/viblo/php.svg)](https://hub.docker.com/r/viblo/php/)
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/sunasteriskrnd/php?style=flat-square)](https://hub.docker.com/r/sunasteriskrnd/php/)
 
 ## Available tags
 
 These are all available tags divided into six [variants](#image-variants).
 
-| Docker Tag                                                                                           | Size                                                                                                                                             |
-|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| [`latest`, `7.3`, `cli`, `alpine`, `7.3-cli`, `cli-alpine`, `7.3-cli-alpine`](alpine/cli/Dockerfile) | [![image size](https://images.microbadger.com/badges/image/viblo/php:cli.svg)](https://microbadger.com/images/viblo/php:cli)                     |
-| [`fpm`, `7.3-fpm`, `fpm-alpine`, `7.3-fpm-alpine`](alpine/fpm/Dockerfile)                            | [![image size](https://images.microbadger.com/badges/image/viblo/php:fpm.svg)](https://microbadger.com/images/viblo/php:fpm)                     |
-| [`caddy`, `7.3-caddy`, `caddy-alpine`, `7.3-caddy-alpine`](alpine/caddy/Dockerfile)                  | [![image size](https://images.microbadger.com/badges/image/viblo/php:caddy.svg)](https://microbadger.com/images/viblo/php:caddy)                 |
-| [`stretch`, `7.3-stretch`, `cli-stretch`, `7.3-cli-stretch`](stretch/cli/Dockerfile)                 | [![image size](https://images.microbadger.com/badges/image/viblo/php:stretch.svg)](https://microbadger.com/images/viblo/php:stretch)             |
-| [`fpm-stretch`, `7.3-fpm-stretch`](stretch/fpm/Dockerfile)                                           | [![image size](https://images.microbadger.com/badges/image/viblo/php:fpm-stretch.svg)](https://microbadger.com/images/viblo/php:fpm-stretch)     |
-| [`caddy-stretch`, `7.3-caddy-stretch`](stretch/caddy/Dockerfile)                                     | [![image size](https://images.microbadger.com/badges/image/viblo/php:caddy-stretch.svg)](https://microbadger.com/images/viblo/php:caddy-stretch) |
+| PHP | Tag                                                                                                                    |
+|-----|------------------------------------------------------------------------------------------------------------------------|
+| 7.4 | [`latest`, `cli`, `alpine`, `cli-alpine`, `7.4`, `7.4-cli`, `7.4-alpine`, `7.4-cli-alpine`](7.4/alpine/cli/Dockerfile) |
+|     | [`fpm`, `fpm-alpine`, `7.4-fpm`, `7.4-fpm-alpine`](7.4/alpine/fpm/Dockerfile)                                          |
+|     | [`caddy`, `caddy-alpine`, `7.4-caddy`, `7.4-caddy-alpine`](7.4/alpine/caddy/Dockerfile)                                |
+|     | [`buster`, `7.4-buster`, `cli-buster`, `7.4-cli-buster`](7.4/buster/cli/Dockerfile)                                    |
+|     | [`fpm-buster`, `7.4-fpm-buster`](7.4/buster/fpm/Dockerfile)                                                            |
+|     | [`caddy-buster`, `7.4-caddy-buster`](7.4/buster/caddy/Dockerfile)                                                      |
+| 7.3 | [`7.3`, `7.3-cli`, `7.3-alpine`, `7.3-cli-alpine`](7.3/alpine/cli/Dockerfile)                                          |
+|     | [`7.3-fpm`, `7.3-fpm-alpine`](7.3/alpine/fpm/Dockerfile)                                                               |
+|     | [`7.3-caddy`, `7.3-caddy-alpine`](7.3/alpine/caddy/Dockerfile)                                                         |
+|     | [`7.3-buster`, `7.3-cli-buster`](7.3/buster/cli/Dockerfile)                                                            |
+|     | [`7.3-fpm-buster`](7.3/buster/fpm/Dockerfile)                                                                          |
+|     | [`7.3-caddy-buster`](7.3/buster/caddy/Dockerfile)                                                                      |
 
 ## Installed extensions
 
@@ -30,7 +36,7 @@ The following extra PHP extensions are installed.
 - pgsql
 - pdo_pgsql
 
-You may install more extensions following the [same method used with the official PHP image](https://github.com/docker-library/docs/tree/master/php#how-to-install-more-php-extensions).
+You may install more extensions using the [same method used with the official PHP image](https://github.com/docker-library/docs/tree/master/php#how-to-install-more-php-extensions).
 
 ## Configuration
 
@@ -81,13 +87,13 @@ healthcheck:
 
 ## Image variants
 
-There are 3 variants (`PHP CLI`, `PHP-FPM`, `Caddy`) based on *Alpine* and *Debian Stretch* to fit your specific use cases.
+There are 3 variants (`PHP CLI`, `PHP-FPM`, `Caddy`) based on *Alpine* and *Debian buster* to fit your specific use cases.
 Default base is Alpine for minimal image size. You can use the Debian variant if you need support for *glibc* dependent packages/extensions.
 
 Docker tags follow the pattern `viblo/php:<version>-<variant>-<base>`.
 `<variant>` is either `cli`, `fpm`, or `caddy`.
-`<base>` is either `alpine` or `stretch` (current Debian suite).
-Omiting `<version>` or `<base>` will make them the default values (*PHP 7.3* on *Alpine*).
+`<base>` is either `alpine` or `buster` (current Debian suite).
+Omiting `<version>` or `<base>` will make them the default values (*PHP 7.4* on *Alpine*).
 
 ### Caddy
 
