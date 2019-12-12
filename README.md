@@ -49,7 +49,7 @@ docker run --rm -it \
     -e PHP.memory_limit=256M \
     -e PHP.post_max_size=64M \
     -e PHP.upload_max_file_size=64M \
-    viblo/php
+    sunasteriskrnd/php
 ```
 
 ```sh
@@ -57,7 +57,7 @@ docker run --rm -it \
     -e PHP.memory_limit=256M \
     -e PHP_FPM.pm=ondemand \
     -e PHP_FPM.pm.max_children=40 \
-    viblo/php:fpm
+    sunasteriskrnd/php:fpm
 ```
 
 Or you can use the [original method](https://github.com/docker-library/docs/tree/master/php#configuration) as used with the official image.
@@ -72,7 +72,7 @@ docker run --rm -d  \
     --health-interval=15s \
     --health-timeout=3s \
     --health-retries=3 \
-    viblo/php:fpm
+    sunasteriskrnd/php:fpm
 ```
 
 Using *docker-compose*:
@@ -90,7 +90,7 @@ healthcheck:
 There are 3 variants (`PHP CLI`, `PHP-FPM`, `Caddy`) based on *Alpine* and *Debian buster* to fit your specific use cases.
 Default base is Alpine for minimal image size. You can use the Debian variant if you need support for *glibc* dependent packages/extensions.
 
-Docker tags follow the pattern `viblo/php:<version>-<variant>-<base>`.
+Docker tags follow the pattern `sunasteriskrnd/php:<version>-<variant>-<base>`.
 `<variant>` is either `cli`, `fpm`, or `caddy`.
 `<base>` is either `alpine` or `buster` (current Debian suite).
 Omiting `<version>` or `<base>` will make them the default values (*PHP 7.4* on *Alpine*).
