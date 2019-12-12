@@ -27,14 +27,15 @@ These are all available tags divided into six [variants](#image-variants).
 
 The following extra PHP extensions are installed.
 
-- opcache
-- zip
-- gd (with JPEG support)
 - bcmath
+- gd (with JPEG support)
 - mysqli
+- opcache
 - pdo_mysql
 - pgsql
 - pdo_pgsql
+- redis
+- zip
 
 You may install more extensions using the [same method used with the official PHP image](https://github.com/docker-library/docs/tree/master/php#how-to-install-more-php-extensions).
 

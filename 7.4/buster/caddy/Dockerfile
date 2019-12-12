@@ -28,12 +28,18 @@ ENV PHP_EXTENSIONS \
     pgsql \
     pdo_pgsql
 
+ENV PECL_EXTENSIONS \
+    redis
+
 RUN apt-get update \
     && apt-get install -y $RUN_DEPS $BUILD_DEPS \
     && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
     && apt-get purge -y --autoremove $BUILD_DEPS \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pecl install $PECL_EXTENSIONS \
+    && docker-php-ext-enable $PECL_EXTENSIONS
 
 COPY config /usr/local/etc/php/conf.d
 COPY php-fpm /usr/local/etc/php-fpm.d
