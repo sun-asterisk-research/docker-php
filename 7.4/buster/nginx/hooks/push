@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+for tag in nginx-buster 7.4-nginx-buster; do
+    docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
+    docker push "$DOCKER_REPO:$tag"
+done

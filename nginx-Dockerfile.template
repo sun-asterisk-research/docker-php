@@ -1,0 +1,17 @@
+ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+
+RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
+
+RUN mkdir -p /run/nginx /run/php
+
+COPY config /usr/local/etc/php/conf.d
+COPY php-fpm.d /usr/local/etc/php-fpm.d
+COPY etc /etc
+
+COPY php-fpm-entrypoint /usr/local/bin/
+
+ENV DOCUMENT_ROOT=/var/www/html
+
+EXPOSE 80 443
+
+ENTRYPOINT [ "/init" ]

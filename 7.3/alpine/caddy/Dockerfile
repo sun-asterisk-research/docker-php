@@ -41,7 +41,7 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
 COPY config /usr/local/etc/php/conf.d
-COPY php-fpm /usr/local/etc/php-fpm.d
+COPY php-fpm.d /usr/local/etc/php-fpm.d
 
 COPY --from=caddy /bin/parent /bin/parent
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy

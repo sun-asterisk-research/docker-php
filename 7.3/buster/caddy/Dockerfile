@@ -42,7 +42,7 @@ RUN pecl install $PECL_EXTENSIONS \
     && docker-php-ext-enable $PECL_EXTENSIONS
 
 COPY config /usr/local/etc/php/conf.d
-COPY php-fpm /usr/local/etc/php-fpm.d
+COPY php-fpm.d /usr/local/etc/php-fpm.d
 
 COPY --from=caddy /bin/parent /bin/parent
 COPY --from=caddy /usr/bin/caddy /usr/bin/caddy

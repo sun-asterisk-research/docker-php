@@ -10,7 +10,7 @@ php_version=$1
 variant=$2
 suite=$3
 
-if [ "$variant" = caddy ]; then
+if [ "$variant" = nginx ] || [ "$variant" = caddy ]; then
     php_variant=fpm
 else
     php_variant=$variant
@@ -39,11 +39,6 @@ mkdir -p "$dir"
 
 echo $'# Generated via generate.sh. Please don\'t edit directly\n' > $dockerfile
 
-# Caddy base image
-if [ "$variant" = caddy ]; then
-    echo $'FROM abiosoft/caddy:no-stats as caddy\n' >> $dockerfile
-fi
-
 # Base Dockerfile
 if [ "$php_version" \< 7.4 ]; then
     sed -r \
@@ -60,32 +55,43 @@ else
         "Dockerfile-$distro.template" >> $dockerfile
 fi
 
-# fcgi for php-fpm healthcheck
-if [ "$variant" = fpm ]; then
-    cat "fcgi-$distro-Dockerfile.template" >> $dockerfile
-fi
-
 # Variant-specific commands
+if [ -f "$variant-$distro-Dockerfile.template" ]; then
+    cat "$variant-$distro-Dockerfile.template" >> $dockerfile
+fi
 cat "$variant-Dockerfile.template" >> $dockerfile
 
 # PHP configs
 cp -rT "config/$php_variant" "$dir/config"
-cp "php-$variant-entrypoint" "$dir"
-write_shebang "$dir/php-$variant-entrypoint"
 
-# php-fpm pool config
-if [ "$php_variant" = fpm ]; then
-    cp -rT php-fpm "$dir/php-fpm"
+# Entrypoint
+cp "php-$php_variant-entrypoint" "$dir"
+write_shebang "$dir/php-$php_variant-entrypoint"
+
+# Variant specific files
+if [ -d "$variant" ]; then
+    cp -rT $variant "$dir"
 fi
 
+# FPM
 if [ "$variant" = fpm ]; then
     cp php-fpm-healthcheck "$dir"
     write_shebang "$dir/php-fpm-healthcheck"
 fi
 
-# Caddyfile for caddy
+# Caddy
 if [ "$variant" = caddy ]; then
-    cp Caddyfile "$dir"
+    sed -i '2a FROM abiosoft/caddy:no-stats as caddy\n' $dockerfile
+    entrypoint="$dir/php-caddy-entrypoint"
+    mv "$dir/php-fpm-entrypoint" "$entrypoint"
+    sed -i "19d" $entrypoint
+    sed -i '18a exec /bin/parent caddy "$@"' $entrypoint
+    cp -rT fpm "$dir"
+fi
+
+# Nginx
+if [ "$variant" = nginx ]; then
+    cp -R nginx/* "$dir"
 fi
 
 # Docker Hub push hook
