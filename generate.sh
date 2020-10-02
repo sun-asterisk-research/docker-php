@@ -10,7 +10,7 @@ php_version=$1
 variant=$2
 suite=$3
 
-if [ "$variant" = nginx ] || [ "$variant" = caddy ]; then
+if [ "$variant" = nginx ]; then
     php_variant=fpm
 else
     php_variant=$variant
@@ -77,16 +77,6 @@ fi
 if [ "$variant" = fpm ]; then
     cp php-fpm-healthcheck "$dir"
     write_shebang "$dir/php-fpm-healthcheck"
-fi
-
-# Caddy
-if [ "$variant" = caddy ]; then
-    sed -i '2a FROM abiosoft/caddy:no-stats as caddy\n' $dockerfile
-    entrypoint="$dir/php-caddy-entrypoint"
-    mv "$dir/php-fpm-entrypoint" "$entrypoint"
-    sed -i "19d" $entrypoint
-    sed -i '18a exec /bin/parent caddy "$@"' $entrypoint
-    cp -rT fpm "$dir"
 fi
 
 # Nginx
