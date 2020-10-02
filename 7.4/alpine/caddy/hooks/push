@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-for tag in caddy caddy-alpine 7.4-caddy 7.4-caddy-alpine; do
-    docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
-    docker push "$DOCKER_REPO:$tag"
-done
