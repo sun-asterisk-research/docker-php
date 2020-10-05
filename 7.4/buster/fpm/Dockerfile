@@ -48,6 +48,9 @@ COPY php-fpm.d /usr/local/etc/php-fpm.d
 
 COPY php-fpm-entrypoint php-fpm-healthcheck /usr/local/bin/
 
+RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/base-docker-php-entrypoint \
+    && ln -s /usr/local/bin/php-fpm-entrypoint /usr/local/bin/docker-php-entrypoint
+
 ENTRYPOINT [ "php-fpm-entrypoint" ]
 
 CMD ["php-fpm"]
