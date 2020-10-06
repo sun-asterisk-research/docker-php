@@ -13,4 +13,4 @@ read_env_config() {
 
 read_env_config PHP $PHP_INI_DIR/conf.d/zz-docker-env.ini
 
-exec base-docker-php-entrypoint "$@"
+exec docker-php-entrypoint "$@"
