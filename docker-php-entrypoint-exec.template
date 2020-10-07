@@ -1,0 +1,2 @@
+
+exec docker-php-entrypoint-base "$@"

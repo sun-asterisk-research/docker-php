@@ -1,0 +1,4 @@
+
+RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-base
+
+COPY rootfs /

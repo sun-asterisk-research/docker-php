@@ -39,15 +39,17 @@ RUN apt-get update \
 RUN pecl install $PECL_EXTENSIONS \
     && docker-php-ext-enable $PECL_EXTENSIONS
 
+RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-base
+
+COPY rootfs /
+
 RUN apt-get update \
     && apt-get install -y fcgiwrap \
     && rm -rf /var/lib/apt/lists/*
 
-COPY config /usr/local/etc/php/conf.d
-COPY php-fpm.d /usr/local/etc/php-fpm.d
+# For backward compatibility
+RUN ln -s /usr/local/bin/docker-php-entrypoint /usr/local/bin/php-fpm-entrypoint
 
-COPY php-fpm-entrypoint php-fpm-healthcheck /usr/local/bin/
+ENTRYPOINT [ "docker-php-entrypoint" ]
 
-ENTRYPOINT [ "php-fpm-entrypoint" ]
-
-CMD ["php-fpm"]
+CMD [ "php-fpm" ]

@@ -46,43 +46,39 @@ if [ "$php_version" \< 7.4 ]; then
         -e "s!%%variant%%!$php_variant!" \
         -e "s!%%debian_suite%%!$DEBIAN_SUITE!" \
         -e "s!--with-jpeg!--with-jpeg-dir=/usr/include!" \
-        "Dockerfile-$distro.template" >> $dockerfile
+        "Dockerfile-base-$distro.template" >> $dockerfile
 else
     sed -r \
         -e "s!%%version%%!$php_version!" \
         -e "s!%%variant%%!$php_variant!" \
         -e "s!%%debian_suite%%!$DEBIAN_SUITE!" \
-        "Dockerfile-$distro.template" >> $dockerfile
+        "Dockerfile-base-$distro.template" >> $dockerfile
 fi
+
+cat "Dockerfile-base.template" >> $dockerfile
 
 # Variant-specific commands
-if [ -f "$variant-$distro-Dockerfile.template" ]; then
-    cat "$variant-$distro-Dockerfile.template" >> $dockerfile
+if [ -f "Dockerfile-$variant-$distro.template" ]; then
+    cat "Dockerfile-$variant-$distro.template" >> $dockerfile
 fi
-cat "$variant-Dockerfile.template" >> $dockerfile
+cat "Dockerfile-$variant.template" >> $dockerfile
 
-# PHP configs
-cp -rT "config/$php_variant" "$dir/config"
+# Root
+if [ -d "$variant" ]; then
+    cp -rT $variant "$dir/rootfs"
+fi
 
 # Entrypoint
-cp "php-$php_variant-entrypoint" "$dir"
-write_shebang "$dir/php-$php_variant-entrypoint"
+entrypoint="$dir/rootfs/usr/local/bin/docker-php-entrypoint"
 
-# Variant specific files
-if [ -d "$variant" ]; then
-    cp -rT $variant "$dir"
+mkdir -p "$dir/rootfs/usr/local/bin" && cp docker-php-entrypoint.template "$entrypoint"
+
+if [ "$php_variant" = fpm ]; then
+    cat docker-php-entrypoint-fpm.template >> "$entrypoint"
 fi
 
-# FPM
-if [ "$variant" = fpm ]; then
-    cp php-fpm-healthcheck "$dir"
-    write_shebang "$dir/php-fpm-healthcheck"
-fi
-
-# Nginx
-if [ "$variant" = nginx ]; then
-    cp -R nginx/* "$dir"
-fi
+cat docker-php-entrypoint-exec.template >> "$entrypoint"
+write_shebang "$entrypoint"
 
 # Docker Hub push hook
 mkdir -p "$dir/hooks"
