@@ -38,6 +38,10 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
+RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-base
+
+COPY rootfs /
+
 RUN apk add --no-cache nginx gettext
 
 ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
@@ -45,12 +49,6 @@ ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/la
 RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
 
 RUN mkdir -p /run/nginx /run/php
-
-COPY config /usr/local/etc/php/conf.d
-COPY php-fpm.d /usr/local/etc/php-fpm.d
-COPY etc /etc
-
-COPY php-fpm-entrypoint /usr/local/bin/
 
 ENV DOCUMENT_ROOT=/var/www/html
 

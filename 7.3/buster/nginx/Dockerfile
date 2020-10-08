@@ -39,6 +39,10 @@ RUN apt-get update \
 RUN pecl install $PECL_EXTENSIONS \
     && docker-php-ext-enable $PECL_EXTENSIONS
 
+RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-base
+
+COPY rootfs /
+
 RUN apt-get update \
     && apt-get install -y nginx gettext-base \
     && rm -rf /var/lib/apt/lists/*
@@ -48,12 +52,6 @@ ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/la
 RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
 
 RUN mkdir -p /run/nginx /run/php
-
-COPY config /usr/local/etc/php/conf.d
-COPY php-fpm.d /usr/local/etc/php-fpm.d
-COPY etc /etc
-
-COPY php-fpm-entrypoint /usr/local/bin/
 
 ENV DOCUMENT_ROOT=/var/www/html
 

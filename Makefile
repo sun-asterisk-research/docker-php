@@ -21,6 +21,7 @@ alpine: $(ALPINE_IMAGES)
 debian $(DEBIAN_SUITE): $(DEBIAN_IMAGES)
 
 all:
+	@$(MAKE) -s clean-generated
 	@for version in $(ALL_VERSIONS); do \
 		PHP_VERSION=$$version $(MAKE) -s alpine debian; \
 	done
@@ -30,8 +31,12 @@ docker-build:
 	@ctx=$$(echo $$image | awk -F '-' '{if($$3){print $$1"/"$$3"/"$$2}else if($$2){print $(PHP_VERSION)/$$2"/"$$1}else{print "$(PHP_VERSION)/alpine/"$$1}}') && \
 	docker build $$ctx -t sunasteriskrnd/php:$$image
 
-clean:
+clean-generated:
 	rm -rf $(ALL_VERSIONS)
+
+clean-images:
 	docker ps -qf ancestor=sunasteriskrnd/php | xargs -r docker kill
 	docker ps -aqf ancestor=sunasteriskrnd/php | xargs -r docker rm
 	docker images -q sunasteriskrnd/php | xargs -r docker rmi -f
+
+clean: clean-generated clean-images

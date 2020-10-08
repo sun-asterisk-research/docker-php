@@ -1,8 +1,0 @@
-COPY config /usr/local/etc/php/conf.d
-COPY php-fpm.d /usr/local/etc/php-fpm.d
-
-COPY php-fpm-entrypoint php-fpm-healthcheck /usr/local/bin/
-
-ENTRYPOINT [ "php-fpm-entrypoint" ]
-
-CMD ["php-fpm"]
