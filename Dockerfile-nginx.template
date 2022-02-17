@@ -1,5 +1,5 @@
 
-ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/archive/refs/tags/v3.0.0.2.tar.gz
 
 RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
 

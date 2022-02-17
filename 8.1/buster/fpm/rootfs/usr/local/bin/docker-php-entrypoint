@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+write_env_config() {
+    prefix=$1
+    output=$2
+
+    env | grep -E "^$prefix\..+=.+" | while IFS='=' read -r config_name config_value; do
+        echo "${config_name#*.} = $config_value" >> $output
+    done
+}
+
+write_env_config PHP $PHP_INI_DIR/conf.d/zz-docker-env.ini
+write_env_config PHP_FPM /usr/local/etc/php-fpm.d/zz-docker.conf
+
+exec docker-php-entrypoint-base "$@"
