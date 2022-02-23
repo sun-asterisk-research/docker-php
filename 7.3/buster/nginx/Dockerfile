@@ -1,6 +1,6 @@
 # Generated via generate.sh. Please don't edit directly
 
-FROM php:7.3-fpm-buster
+FROM php:7.3.33-fpm-buster
 
 ENV RUN_DEPS \
     zlib1g \
@@ -47,7 +47,7 @@ RUN apt-get update \
     && apt-get install -y nginx gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
-ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/releases/latest/download/s6-overlay-amd64.tar.gz
+ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/archive/refs/tags/v3.0.0.2.tar.gz
 
 RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
 

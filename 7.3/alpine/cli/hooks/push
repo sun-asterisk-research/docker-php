@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-for tag in 7.3 7.3-cli 7.3-alpine 7.3-cli-alpine; do
-    docker tag $IMAGE_NAME "$DOCKER_REPO:$tag"
-    docker push "$DOCKER_REPO:$tag"
-done

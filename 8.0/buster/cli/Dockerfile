@@ -1,6 +1,6 @@
 # Generated via generate.sh. Please don't edit directly
 
-FROM php:8.0-cli-buster
+FROM php:8.0.16-cli-buster
 
 ENV RUN_DEPS \
     zlib1g \

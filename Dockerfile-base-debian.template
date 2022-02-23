@@ -1,4 +1,4 @@
-FROM php:%%version%%-%%variant%%-%%debian_suite%%
+FROM php:{{ version }}-{{ variant }}-{{ distro_release }}
 
 ENV RUN_DEPS \
     zlib1g \

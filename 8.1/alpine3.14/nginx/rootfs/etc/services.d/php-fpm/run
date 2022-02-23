@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv sh
+
+exec docker-php-entrypoint php-fpm

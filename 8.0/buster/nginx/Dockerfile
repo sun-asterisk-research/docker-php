@@ -1,6 +1,6 @@
 # Generated via generate.sh. Please don't edit directly
 
-FROM php:8.0-fpm-buster
+FROM php:8.0.16-fpm-buster
 
 ENV RUN_DEPS \
     zlib1g \

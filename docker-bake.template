@@ -1,0 +1,11 @@
+variable "REGISTRY" {
+    default = ""
+}
+
+variable "REPO" {
+    default = "sunasteriskrnd/php"
+}
+
+group "default" {
+    targets = {{ targets }}
+}
