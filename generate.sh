@@ -193,7 +193,7 @@ generate_bake_file_target() {
 
     local version_tags="$php_minor,$php_version"
 
-    if [ "$php_minor" = \$"default_php_${php_major}_version" ]; then
+    if eval [ "$php_minor" = \$"default_php_${php_major}_version" ]; then
         version_tags="$php_major,$version_tags"
     fi
 
