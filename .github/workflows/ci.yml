@@ -1,0 +1,95 @@
+name: GitHub CI
+
+on:
+  pull_request:
+  push:
+
+defaults:
+  run:
+    shell: 'bash -Eeuo pipefail -x {0}'
+
+jobs:
+  verify-templating:
+    name: Verify templating
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate
+        run: ./generate.sh
+      - name: Check Git status
+        run: |
+          test -z "$(git status --short)"
+
+  docker:
+    name: ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    needs:
+      - verify-templating
+    strategy:
+      matrix:
+        target:
+          [
+            "7.3.33-cli-buster",
+            "7.3.33-fpm-buster",
+            "7.3.33-nginx-buster",
+            "7.3.33-cli-bullseye",
+            "7.3.33-fpm-bullseye",
+            "7.3.33-nginx-bullseye",
+            "7.3.33-cli-alpine3.14",
+            "7.3.33-fpm-alpine3.14",
+            "7.3.33-nginx-alpine3.14",
+            "7.3.33-cli-alpine3.15",
+            "7.3.33-fpm-alpine3.15",
+            "7.3.33-nginx-alpine3.15",
+            "7.4.28-cli-buster",
+            "7.4.28-fpm-buster",
+            "7.4.28-nginx-buster",
+            "7.4.28-cli-bullseye",
+            "7.4.28-fpm-bullseye",
+            "7.4.28-nginx-bullseye",
+            "7.4.28-cli-alpine3.14",
+            "7.4.28-fpm-alpine3.14",
+            "7.4.28-nginx-alpine3.14",
+            "7.4.28-cli-alpine3.15",
+            "7.4.28-fpm-alpine3.15",
+            "7.4.28-nginx-alpine3.15",
+            "8.0.16-cli-buster",
+            "8.0.16-fpm-buster",
+            "8.0.16-nginx-buster",
+            "8.0.16-cli-bullseye",
+            "8.0.16-fpm-bullseye",
+            "8.0.16-nginx-bullseye",
+            "8.0.16-cli-alpine3.14",
+            "8.0.16-fpm-alpine3.14",
+            "8.0.16-nginx-alpine3.14",
+            "8.0.16-cli-alpine3.15",
+            "8.0.16-fpm-alpine3.15",
+            "8.0.16-nginx-alpine3.15",
+            "8.1.3-cli-buster",
+            "8.1.3-fpm-buster",
+            "8.1.3-nginx-buster",
+            "8.1.3-cli-bullseye",
+            "8.1.3-fpm-bullseye",
+            "8.1.3-nginx-bullseye",
+            "8.1.3-cli-alpine3.14",
+            "8.1.3-fpm-alpine3.14",
+            "8.1.3-nginx-alpine3.14",
+            "8.1.3-cli-alpine3.15",
+            "8.1.3-fpm-alpine3.15",
+            "8.1.3-nginx-alpine3.15",
+          ]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up buildx
+        uses: docker/setup-buildx-action@v1
+      - name: DockerHub login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/bake-action@master
+        with:
+          targets: ${{ matrix.target }}
+          push: ${{ github.event_name == 'push' }}

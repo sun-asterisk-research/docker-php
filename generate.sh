@@ -210,7 +210,7 @@ generate_bake_file_target() {
         tags="$tags latest"
     fi
 
-    tags=$(echo "$tags" | awk -F ' ' '{for(i=1; i<=NF; i++) print "\${REGISTRY}\${REPO}:"$i}' | format_list | indent 1 4 | trim)
+    tags=$(echo "$tags" | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\\${REPO}:/g' | format_list | indent 1 4 | trim)
 
     tpl docker-bake-target.template \
         php_version \
@@ -234,6 +234,16 @@ generate_bake_file() {
     done
 }
 
+generate_workflow() {
+    local workflow_file=".github/workflows/ci.yml"
+
+    echo "generating $workflow_file ..."
+
+    local targets=$(echo "$@" | format_list 2 | indent 5 2 | trim)
+
+    tpl ci.yml.template targets > $workflow_file
+}
+
 generate_all() {
     local distro_releases="$debian_releases $alpine_releases"
 
@@ -252,6 +262,7 @@ generate_all() {
     done
 
     generate_bake_file $targets
+    generate_workflow $targets
 }
 
 clean_all() {
@@ -260,6 +271,7 @@ clean_all() {
     done
 
     rm -f docker-bake.hcl
+    rm -f .github/workflows/ci.yml
 }
 
 if [ "$#" = 0 ]; then
