@@ -26,10 +26,11 @@ indent() {
 }
 
 trim() {
-    local var="$(cat)"
-    var="${var#"${var%%[![:space:]]*}"}"
-    var="${var%"${var##*[![:space:]]}"}"
-    echo "$var"
+    local delim=${1:-'[:space:]'}
+    local str="$(cat)"
+    str="${str#"${str%%[!$delim]*}"}"
+    str="${str%"${str##*[!$delim]}"}"
+    echo "$str"
 }
 
 tpl() {
@@ -163,6 +164,26 @@ generate_dockerfile() {
     sed -i "1i$shebang\n" "$entrypoint"
 }
 
+generate_tags() {
+    local IFS=','
+
+    local tags
+
+    for version in $1; do
+        for variant in $2; do
+            for distro in $3; do
+                local tag=$(echo "$version-$variant-$distro" | sed -E -e 's/default(-|$)//g' | trim -)
+                if [ -z "$tag" ]; then
+                    tag=latest
+                fi
+                tags="$tags $tag"
+            done
+        done
+    done
+
+    echo "$tags"
+}
+
 generate_bake_file_target() {
     eval $(meta_from_full_tag $1)
 
@@ -170,47 +191,39 @@ generate_bake_file_target() {
     [ "$variant" = "$default_variant" ] && local is_default_variant=true
     [ "$distro_release" = "$default_distro_release" ] && local is_default_distro_release=true
 
-    local version_tags="$php_minor $php_version"
+    local version_tags="$php_minor,$php_version"
 
-    if eval [ "$php_minor" = \$"default_php_${php_major}_version" ]; then
-        version_tags="$php_major $version_tags"
+    if [ "$php_minor" = \$"default_php_${php_major}_version" ]; then
+        version_tags="$php_major,$version_tags"
     fi
 
-    local tags=""
-
-    for version in $version_tags; do
-        tags="$tags $version-$variant-$distro_release"
-    done
-
-    if [ "$is_default_variant" ]; then
-        for version in $version_tags; do
-            tags="$tags $version-$distro_release"
-        done
+    if [ "$php_minor" = "$default_php_minor" ]; then
+        version_tags="$version_tags,default"
     fi
 
-    if [ "$is_default_distro_release" ]; then
-        for version in $version_tags; do
-            tags="$tags $version-$variant"
-        done
+    local variant_tags="$variant"
+
+    if [ "$variant" = "$default_variant" ]; then
+        variant_tags="$variant_tags,default"
     fi
 
-    if [ "$is_default_variant" ] && [ "$is_default_distro_release" ]; then
-        for version in $version_tags; do
-            tags="$tags $version"
-        done
-    fi
+    local distro_tags="$distro_release"
 
     if [ "$distro" = "alpine" ] && [ "$distro_release" = "$default_alpine_release" ]; then
-        for version in $version_tags; do
-            tags="$tags $version-alpine"
-        done
+        distro_tags="$distro_tags,alpine"
     fi
 
-    if [ "$is_default_version" ] && [ "$is_default_variant" ] && [ "$is_default_distro_release" ]; then
-        tags="$tags latest"
+    if [ "$distro_release" = "$default_distro_release" ]; then
+        distro_tags="$distro_tags,default"
     fi
 
-    tags=$(echo "$tags" | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\\${REPO}:/g' | format_list | indent 1 4 | trim)
+    tags=$(
+        generate_tags "$version_tags" "$variant_tags" "$distro_tags" \
+        | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\\${REPO}:/g' \
+        | format_list \
+        | indent 1 4 \
+        | trim
+    )
 
     tpl docker-bake-target.template \
         php_version \
