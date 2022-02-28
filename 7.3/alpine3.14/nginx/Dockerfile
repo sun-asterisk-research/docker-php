@@ -44,9 +44,7 @@ COPY rootfs /
 
 RUN apk add --no-cache nginx gettext
 
-ENV S6_OVERLAY_RELEASE=https://github.com/just-containers/s6-overlay/archive/refs/tags/v3.0.0.2.tar.gz
-
-RUN curl -sL ${S6_OVERLAY_RELEASE} | tar xzf - -C /
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
 
 RUN mkdir -p /run/nginx /run/php
 
