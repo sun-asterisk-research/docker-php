@@ -6,3 +6,5 @@ generate:
 
 clean:
 	@./generate.sh clean
+
+all: clean generate

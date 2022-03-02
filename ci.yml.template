@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Generate
-        run: ./generate.sh
+        run: make all
       - name: Check Git status
         run: |
           test -z "$(git status --short)"
