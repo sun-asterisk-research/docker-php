@@ -53,7 +53,9 @@ RUN apt-get update \
 
 COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
 
-RUN mkdir -p /run/nginx /run/php
+RUN mkdir -p /run/nginx /run/php \
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log
 
 ENV DOCUMENT_ROOT=/var/www/html
 
