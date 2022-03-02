@@ -43,8 +43,12 @@ RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 COPY rootfs /
 
+RUN set -x \
+    && groupadd --system --gid 101 nginx \
+    && useradd --system --no-create-home --uid 101 --gid nginx --groups www-data --home-dir /nonexistent --comment "nginx user" --shell /bin/false nginx
+
 RUN apt-get update \
-    && apt-get install -y nginx gettext-base \
+    && apt-get install -o Dpkg::Options::="--force-confold" -y nginx gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /

@@ -1,2 +1,6 @@
 
+RUN set -x \
+    && addgroup -g 101 -S nginx \
+    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -g nginx -G www-data nginx
+
 RUN apk add --no-cache nginx gettext

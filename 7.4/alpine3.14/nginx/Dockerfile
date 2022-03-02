@@ -42,6 +42,10 @@ RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 COPY rootfs /
 
+RUN set -x \
+    && addgroup -g 101 -S nginx \
+    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -g nginx -G www-data nginx
+
 RUN apk add --no-cache nginx gettext
 
 COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
