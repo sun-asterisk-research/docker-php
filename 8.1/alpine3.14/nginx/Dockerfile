@@ -1,4 +1,4 @@
-# Generated via generate.sh. Please don't edit directly
+# NOTE: This file was generated via generate.sh. Don't edit it directly
 
 FROM php:8.1.3-fpm-alpine3.14
 

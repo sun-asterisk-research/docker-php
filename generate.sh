@@ -101,6 +101,10 @@ default_php_major="$(get_major $default_php_version)"
 default_php_minor="$(get_minor $default_php_version)"
 eval default_distro_release=\$"default_${default_distro}_release"
 
+write_warn_edit() {
+    echo -e "# NOTE: This file was generated via generate.sh. Don't edit it directly\n" > $1
+}
+
 generate_dockerfile() {
     eval $(meta_from_full_tag $1)
 
@@ -117,7 +121,7 @@ generate_dockerfile() {
 
     mkdir -p "$dir"
 
-    echo $'# Generated via generate.sh. Please don\'t edit directly\n' > $dockerfile
+    write_warn_edit $dockerfile
 
     # Base Dockerfile
     tpl "Dockerfile-base-$distro.template" \
@@ -238,9 +242,11 @@ generate_bake_file() {
 
     echo "generating $bake_file ..."
 
+    write_warn_edit $bake_file
+
     local targets=$(echo "$@" | format_list | indent 1 4 | trim)
 
-    tpl docker-bake.template targets > $bake_file
+    tpl docker-bake.template targets >> $bake_file
 
     for target in $@; do
         generate_bake_file_target $target >> $bake_file
@@ -252,9 +258,12 @@ generate_workflow() {
 
     echo "generating $workflow_file ..."
 
+    mkdir -p .github/workflows
+    write_warn_edit $workflow_file
+
     local targets=$(echo "$@" | format_list 2 | indent 5 2 | trim)
 
-    tpl ci.yml.template targets > $workflow_file
+    tpl ci.yml.template targets >> $workflow_file
 }
 
 generate_all() {
