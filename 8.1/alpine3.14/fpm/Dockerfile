@@ -1,6 +1,6 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-FROM php:8.1.3-fpm-alpine3.14
+FROM php:8.1.4-fpm-alpine3.14
 
 ENV RUN_DEPS \
     zlib \

@@ -1,6 +1,6 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-FROM php:8.1.3-cli-bullseye
+FROM php:8.1.4-cli-bullseye
 
 ENV RUN_DEPS \
     zlib1g \
