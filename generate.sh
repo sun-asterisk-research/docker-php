@@ -262,8 +262,9 @@ generate_workflow() {
     write_warn_edit $workflow_file
 
     local targets=$(echo "$@" | format_list 2 | indent 5 2 | trim)
+    local platforms=$(echo $platforms | sed 's/ /,/g')
 
-    tpl ci.yml.template targets >> $workflow_file
+    tpl ci.yml.template targets platforms >> $workflow_file
 }
 
 generate_all() {
@@ -271,7 +272,7 @@ generate_all() {
 
     local targets=""
 
-    for version in $(echo "$php_versions" | sed -e 's/ /\n/g' | sort); do
+    for version in $(echo "$php_versions" | sed -e 's/ /\n/g' | sort -r); do
         for distro in $distro_releases; do
             for variant in cli fpm nginx; do
                 targets="$targets $version-$variant-$distro"

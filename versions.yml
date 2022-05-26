@@ -5,8 +5,8 @@ php_versions:
 - 8.1.5
 
 alpine_releases:
-- alpine3.14
 - alpine3.15
+- alpine3.14
 
 debian_releases:
 - buster
@@ -19,3 +19,8 @@ default_variant: cli
 default_distro: debian
 default_alpine_release: alpine3.15
 default_debian_release: bullseye
+
+platforms:
+- linux/amd64
+- linux/arm
+- linux/arm64
