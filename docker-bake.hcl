@@ -10,48 +10,48 @@ variable "REPO" {
 
 group "default" {
     targets = [
-        "8.1.6-cli-buster",
-        "8.1.6-fpm-buster",
-        "8.1.6-nginx-buster",
         "8.1.6-cli-bullseye",
         "8.1.6-fpm-bullseye",
         "8.1.6-nginx-bullseye",
+        "8.1.6-cli-buster",
+        "8.1.6-fpm-buster",
+        "8.1.6-nginx-buster",
         "8.1.6-cli-alpine3.15",
         "8.1.6-fpm-alpine3.15",
         "8.1.6-nginx-alpine3.15",
         "8.1.6-cli-alpine3.14",
         "8.1.6-fpm-alpine3.14",
         "8.1.6-nginx-alpine3.14",
-        "8.0.19-cli-buster",
-        "8.0.19-fpm-buster",
-        "8.0.19-nginx-buster",
         "8.0.19-cli-bullseye",
         "8.0.19-fpm-bullseye",
         "8.0.19-nginx-bullseye",
+        "8.0.19-cli-buster",
+        "8.0.19-fpm-buster",
+        "8.0.19-nginx-buster",
         "8.0.19-cli-alpine3.15",
         "8.0.19-fpm-alpine3.15",
         "8.0.19-nginx-alpine3.15",
         "8.0.19-cli-alpine3.14",
         "8.0.19-fpm-alpine3.14",
         "8.0.19-nginx-alpine3.14",
-        "7.4.29-cli-buster",
-        "7.4.29-fpm-buster",
-        "7.4.29-nginx-buster",
         "7.4.29-cli-bullseye",
         "7.4.29-fpm-bullseye",
         "7.4.29-nginx-bullseye",
+        "7.4.29-cli-buster",
+        "7.4.29-fpm-buster",
+        "7.4.29-nginx-buster",
         "7.4.29-cli-alpine3.15",
         "7.4.29-fpm-alpine3.15",
         "7.4.29-nginx-alpine3.15",
         "7.4.29-cli-alpine3.14",
         "7.4.29-fpm-alpine3.14",
         "7.4.29-nginx-alpine3.14",
-        "7.3.33-cli-buster",
-        "7.3.33-fpm-buster",
-        "7.3.33-nginx-buster",
         "7.3.33-cli-bullseye",
         "7.3.33-fpm-bullseye",
         "7.3.33-nginx-bullseye",
+        "7.3.33-cli-buster",
+        "7.3.33-fpm-buster",
+        "7.3.33-nginx-buster",
         "7.3.33-cli-alpine3.15",
         "7.3.33-fpm-alpine3.15",
         "7.3.33-nginx-alpine3.15",
@@ -59,61 +59,6 @@ group "default" {
         "7.3.33-fpm-alpine3.14",
         "7.3.33-nginx-alpine3.14",
     ]
-}
-
-target "8.1.6-cli-buster" {
-    context = "./8.1/buster/cli"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.1-cli-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8-cli-buster",
-        "${REGISTRY}${REPO}:8-buster",
-        "${REGISTRY}${REPO}:8.1-cli-buster",
-        "${REGISTRY}${REPO}:8.1-buster",
-        "${REGISTRY}${REPO}:8.1.6-cli-buster",
-        "${REGISTRY}${REPO}:8.1.6-buster",
-        "${REGISTRY}${REPO}:cli-buster",
-        "${REGISTRY}${REPO}:buster",
-    ]
-}
-
-target "8.1-cli-buster" {
-    inherits = ["8.1.6-cli-buster"]
-}
-
-target "8.1.6-fpm-buster" {
-    context = "./8.1/buster/fpm"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.1-fpm-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8-fpm-buster",
-        "${REGISTRY}${REPO}:8.1-fpm-buster",
-        "${REGISTRY}${REPO}:8.1.6-fpm-buster",
-        "${REGISTRY}${REPO}:fpm-buster",
-    ]
-}
-
-target "8.1-fpm-buster" {
-    inherits = ["8.1.6-fpm-buster"]
-}
-
-target "8.1.6-nginx-buster" {
-    context = "./8.1/buster/nginx"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.1-nginx-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8-nginx-buster",
-        "${REGISTRY}${REPO}:8.1-nginx-buster",
-        "${REGISTRY}${REPO}:8.1.6-nginx-buster",
-        "${REGISTRY}${REPO}:nginx-buster",
-    ]
-}
-
-target "8.1-nginx-buster" {
-    inherits = ["8.1.6-nginx-buster"]
 }
 
 target "8.1.6-cli-bullseye" {
@@ -185,6 +130,61 @@ target "8.1.6-nginx-bullseye" {
 
 target "8.1-nginx-bullseye" {
     inherits = ["8.1.6-nginx-bullseye"]
+}
+
+target "8.1.6-cli-buster" {
+    context = "./8.1/buster/cli"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.1-cli-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8-cli-buster",
+        "${REGISTRY}${REPO}:8-buster",
+        "${REGISTRY}${REPO}:8.1-cli-buster",
+        "${REGISTRY}${REPO}:8.1-buster",
+        "${REGISTRY}${REPO}:8.1.6-cli-buster",
+        "${REGISTRY}${REPO}:8.1.6-buster",
+        "${REGISTRY}${REPO}:cli-buster",
+        "${REGISTRY}${REPO}:buster",
+    ]
+}
+
+target "8.1-cli-buster" {
+    inherits = ["8.1.6-cli-buster"]
+}
+
+target "8.1.6-fpm-buster" {
+    context = "./8.1/buster/fpm"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.1-fpm-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8-fpm-buster",
+        "${REGISTRY}${REPO}:8.1-fpm-buster",
+        "${REGISTRY}${REPO}:8.1.6-fpm-buster",
+        "${REGISTRY}${REPO}:fpm-buster",
+    ]
+}
+
+target "8.1-fpm-buster" {
+    inherits = ["8.1.6-fpm-buster"]
+}
+
+target "8.1.6-nginx-buster" {
+    context = "./8.1/buster/nginx"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.1-nginx-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8-nginx-buster",
+        "${REGISTRY}${REPO}:8.1-nginx-buster",
+        "${REGISTRY}${REPO}:8.1.6-nginx-buster",
+        "${REGISTRY}${REPO}:nginx-buster",
+    ]
+}
+
+target "8.1-nginx-buster" {
+    inherits = ["8.1.6-nginx-buster"]
 }
 
 target "8.1.6-cli-alpine3.15" {
@@ -313,53 +313,6 @@ target "8.1-nginx-alpine3.14" {
     inherits = ["8.1.6-nginx-alpine3.14"]
 }
 
-target "8.0.19-cli-buster" {
-    context = "./8.0/buster/cli"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.0-cli-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8.0-cli-buster",
-        "${REGISTRY}${REPO}:8.0-buster",
-        "${REGISTRY}${REPO}:8.0.19-cli-buster",
-        "${REGISTRY}${REPO}:8.0.19-buster",
-    ]
-}
-
-target "8.0-cli-buster" {
-    inherits = ["8.0.19-cli-buster"]
-}
-
-target "8.0.19-fpm-buster" {
-    context = "./8.0/buster/fpm"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.0-fpm-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8.0-fpm-buster",
-        "${REGISTRY}${REPO}:8.0.19-fpm-buster",
-    ]
-}
-
-target "8.0-fpm-buster" {
-    inherits = ["8.0.19-fpm-buster"]
-}
-
-target "8.0.19-nginx-buster" {
-    context = "./8.0/buster/nginx"
-    cache-from = [
-        "${REGISTRY}${REPO}:8.0-nginx-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:8.0-nginx-buster",
-        "${REGISTRY}${REPO}:8.0.19-nginx-buster",
-    ]
-}
-
-target "8.0-nginx-buster" {
-    inherits = ["8.0.19-nginx-buster"]
-}
-
 target "8.0.19-cli-bullseye" {
     context = "./8.0/bullseye/cli"
     cache-from = [
@@ -413,6 +366,53 @@ target "8.0.19-nginx-bullseye" {
 
 target "8.0-nginx-bullseye" {
     inherits = ["8.0.19-nginx-bullseye"]
+}
+
+target "8.0.19-cli-buster" {
+    context = "./8.0/buster/cli"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.0-cli-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8.0-cli-buster",
+        "${REGISTRY}${REPO}:8.0-buster",
+        "${REGISTRY}${REPO}:8.0.19-cli-buster",
+        "${REGISTRY}${REPO}:8.0.19-buster",
+    ]
+}
+
+target "8.0-cli-buster" {
+    inherits = ["8.0.19-cli-buster"]
+}
+
+target "8.0.19-fpm-buster" {
+    context = "./8.0/buster/fpm"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.0-fpm-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8.0-fpm-buster",
+        "${REGISTRY}${REPO}:8.0.19-fpm-buster",
+    ]
+}
+
+target "8.0-fpm-buster" {
+    inherits = ["8.0.19-fpm-buster"]
+}
+
+target "8.0.19-nginx-buster" {
+    context = "./8.0/buster/nginx"
+    cache-from = [
+        "${REGISTRY}${REPO}:8.0-nginx-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:8.0-nginx-buster",
+        "${REGISTRY}${REPO}:8.0.19-nginx-buster",
+    ]
+}
+
+target "8.0-nginx-buster" {
+    inherits = ["8.0.19-nginx-buster"]
 }
 
 target "8.0.19-cli-alpine3.15" {
@@ -517,57 +517,6 @@ target "8.0-nginx-alpine3.14" {
     inherits = ["8.0.19-nginx-alpine3.14"]
 }
 
-target "7.4.29-cli-buster" {
-    context = "./7.4/buster/cli"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.4-cli-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7-cli-buster",
-        "${REGISTRY}${REPO}:7-buster",
-        "${REGISTRY}${REPO}:7.4-cli-buster",
-        "${REGISTRY}${REPO}:7.4-buster",
-        "${REGISTRY}${REPO}:7.4.29-cli-buster",
-        "${REGISTRY}${REPO}:7.4.29-buster",
-    ]
-}
-
-target "7.4-cli-buster" {
-    inherits = ["7.4.29-cli-buster"]
-}
-
-target "7.4.29-fpm-buster" {
-    context = "./7.4/buster/fpm"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.4-fpm-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7-fpm-buster",
-        "${REGISTRY}${REPO}:7.4-fpm-buster",
-        "${REGISTRY}${REPO}:7.4.29-fpm-buster",
-    ]
-}
-
-target "7.4-fpm-buster" {
-    inherits = ["7.4.29-fpm-buster"]
-}
-
-target "7.4.29-nginx-buster" {
-    context = "./7.4/buster/nginx"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.4-nginx-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7-nginx-buster",
-        "${REGISTRY}${REPO}:7.4-nginx-buster",
-        "${REGISTRY}${REPO}:7.4.29-nginx-buster",
-    ]
-}
-
-target "7.4-nginx-buster" {
-    inherits = ["7.4.29-nginx-buster"]
-}
-
 target "7.4.29-cli-bullseye" {
     context = "./7.4/bullseye/cli"
     cache-from = [
@@ -629,6 +578,57 @@ target "7.4.29-nginx-bullseye" {
 
 target "7.4-nginx-bullseye" {
     inherits = ["7.4.29-nginx-bullseye"]
+}
+
+target "7.4.29-cli-buster" {
+    context = "./7.4/buster/cli"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.4-cli-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7-cli-buster",
+        "${REGISTRY}${REPO}:7-buster",
+        "${REGISTRY}${REPO}:7.4-cli-buster",
+        "${REGISTRY}${REPO}:7.4-buster",
+        "${REGISTRY}${REPO}:7.4.29-cli-buster",
+        "${REGISTRY}${REPO}:7.4.29-buster",
+    ]
+}
+
+target "7.4-cli-buster" {
+    inherits = ["7.4.29-cli-buster"]
+}
+
+target "7.4.29-fpm-buster" {
+    context = "./7.4/buster/fpm"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.4-fpm-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7-fpm-buster",
+        "${REGISTRY}${REPO}:7.4-fpm-buster",
+        "${REGISTRY}${REPO}:7.4.29-fpm-buster",
+    ]
+}
+
+target "7.4-fpm-buster" {
+    inherits = ["7.4.29-fpm-buster"]
+}
+
+target "7.4.29-nginx-buster" {
+    context = "./7.4/buster/nginx"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.4-nginx-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7-nginx-buster",
+        "${REGISTRY}${REPO}:7.4-nginx-buster",
+        "${REGISTRY}${REPO}:7.4.29-nginx-buster",
+    ]
+}
+
+target "7.4-nginx-buster" {
+    inherits = ["7.4.29-nginx-buster"]
 }
 
 target "7.4.29-cli-alpine3.15" {
@@ -745,53 +745,6 @@ target "7.4-nginx-alpine3.14" {
     inherits = ["7.4.29-nginx-alpine3.14"]
 }
 
-target "7.3.33-cli-buster" {
-    context = "./7.3/buster/cli"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.3-cli-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7.3-cli-buster",
-        "${REGISTRY}${REPO}:7.3-buster",
-        "${REGISTRY}${REPO}:7.3.33-cli-buster",
-        "${REGISTRY}${REPO}:7.3.33-buster",
-    ]
-}
-
-target "7.3-cli-buster" {
-    inherits = ["7.3.33-cli-buster"]
-}
-
-target "7.3.33-fpm-buster" {
-    context = "./7.3/buster/fpm"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.3-fpm-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7.3-fpm-buster",
-        "${REGISTRY}${REPO}:7.3.33-fpm-buster",
-    ]
-}
-
-target "7.3-fpm-buster" {
-    inherits = ["7.3.33-fpm-buster"]
-}
-
-target "7.3.33-nginx-buster" {
-    context = "./7.3/buster/nginx"
-    cache-from = [
-        "${REGISTRY}${REPO}:7.3-nginx-buster"
-    ]
-    tags = [
-        "${REGISTRY}${REPO}:7.3-nginx-buster",
-        "${REGISTRY}${REPO}:7.3.33-nginx-buster",
-    ]
-}
-
-target "7.3-nginx-buster" {
-    inherits = ["7.3.33-nginx-buster"]
-}
-
 target "7.3.33-cli-bullseye" {
     context = "./7.3/bullseye/cli"
     cache-from = [
@@ -845,6 +798,53 @@ target "7.3.33-nginx-bullseye" {
 
 target "7.3-nginx-bullseye" {
     inherits = ["7.3.33-nginx-bullseye"]
+}
+
+target "7.3.33-cli-buster" {
+    context = "./7.3/buster/cli"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.3-cli-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7.3-cli-buster",
+        "${REGISTRY}${REPO}:7.3-buster",
+        "${REGISTRY}${REPO}:7.3.33-cli-buster",
+        "${REGISTRY}${REPO}:7.3.33-buster",
+    ]
+}
+
+target "7.3-cli-buster" {
+    inherits = ["7.3.33-cli-buster"]
+}
+
+target "7.3.33-fpm-buster" {
+    context = "./7.3/buster/fpm"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.3-fpm-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7.3-fpm-buster",
+        "${REGISTRY}${REPO}:7.3.33-fpm-buster",
+    ]
+}
+
+target "7.3-fpm-buster" {
+    inherits = ["7.3.33-fpm-buster"]
+}
+
+target "7.3.33-nginx-buster" {
+    context = "./7.3/buster/nginx"
+    cache-from = [
+        "${REGISTRY}${REPO}:7.3-nginx-buster"
+    ]
+    tags = [
+        "${REGISTRY}${REPO}:7.3-nginx-buster",
+        "${REGISTRY}${REPO}:7.3.33-nginx-buster",
+    ]
+}
+
+target "7.3-nginx-buster" {
+    inherits = ["7.3.33-nginx-buster"]
 }
 
 target "7.3.33-cli-alpine3.15" {

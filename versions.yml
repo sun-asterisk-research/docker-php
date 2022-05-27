@@ -9,8 +9,8 @@ alpine_releases:
 - alpine3.14
 
 debian_releases:
-- buster
 - bullseye
+- buster
 
 default_php_version: 8.1
 default_php_7_version: 7.4
