@@ -223,7 +223,7 @@ generate_bake_file_target() {
 
     tags=$(
         generate_tags "$version_tags" "$variant_tags" "$distro_tags" \
-        | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\\${REPO}:/g' \
+        | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\/\\${REPO}:/g' \
         | format_list \
         | indent 1 4 \
         | trim
