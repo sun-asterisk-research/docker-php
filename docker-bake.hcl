@@ -182,13 +182,21 @@ target "8.1.9-cli-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8-cli-alpine",
         "${REGISTRY}/${REPO}:8-alpine3.16",
+        "${REGISTRY}/${REPO}:8-alpine",
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1-cli-alpine",
         "${REGISTRY}/${REPO}:8.1-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1-alpine",
         "${REGISTRY}/${REPO}:8.1.9-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.9-cli-alpine",
         "${REGISTRY}/${REPO}:8.1.9-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.9-alpine",
         "${REGISTRY}/${REPO}:cli-alpine3.16",
+        "${REGISTRY}/${REPO}:cli-alpine",
         "${REGISTRY}/${REPO}:alpine3.16",
+        "${REGISTRY}/${REPO}:alpine",
     ]
 }
 
@@ -203,9 +211,13 @@ target "8.1.9-fpm-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8-fpm-alpine",
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1-fpm-alpine",
         "${REGISTRY}/${REPO}:8.1.9-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.9-fpm-alpine",
         "${REGISTRY}/${REPO}:fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:fpm-alpine",
     ]
 }
 
@@ -220,9 +232,13 @@ target "8.1.9-nginx-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8-nginx-alpine",
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1-nginx-alpine",
         "${REGISTRY}/${REPO}:8.1.9-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.9-nginx-alpine",
         "${REGISTRY}/${REPO}:nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:nginx-alpine",
     ]
 }
 
@@ -237,21 +253,13 @@ target "8.1.9-cli-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8-cli-alpine",
         "${REGISTRY}/${REPO}:8-alpine3.15",
-        "${REGISTRY}/${REPO}:8-alpine",
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1-cli-alpine",
         "${REGISTRY}/${REPO}:8.1-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1-alpine",
         "${REGISTRY}/${REPO}:8.1.9-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-cli-alpine",
         "${REGISTRY}/${REPO}:8.1.9-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-alpine",
         "${REGISTRY}/${REPO}:cli-alpine3.15",
-        "${REGISTRY}/${REPO}:cli-alpine",
         "${REGISTRY}/${REPO}:alpine3.15",
-        "${REGISTRY}/${REPO}:alpine",
     ]
 }
 
@@ -266,13 +274,9 @@ target "8.1.9-fpm-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8-fpm-alpine",
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1-fpm-alpine",
         "${REGISTRY}/${REPO}:8.1.9-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-alpine",
         "${REGISTRY}/${REPO}:fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:fpm-alpine",
     ]
 }
 
@@ -287,13 +291,9 @@ target "8.1.9-nginx-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8-nginx-alpine",
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1-nginx-alpine",
         "${REGISTRY}/${REPO}:8.1.9-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-alpine",
         "${REGISTRY}/${REPO}:nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:nginx-alpine",
     ]
 }
 
@@ -410,9 +410,13 @@ target "8.0.22-cli-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0-cli-alpine",
         "${REGISTRY}/${REPO}:8.0-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0-alpine",
         "${REGISTRY}/${REPO}:8.0.22-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.22-cli-alpine",
         "${REGISTRY}/${REPO}:8.0.22-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.22-alpine",
     ]
 }
 
@@ -427,7 +431,9 @@ target "8.0.22-fpm-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0-fpm-alpine",
         "${REGISTRY}/${REPO}:8.0.22-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.22-fpm-alpine",
     ]
 }
 
@@ -442,7 +448,9 @@ target "8.0.22-nginx-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0-nginx-alpine",
         "${REGISTRY}/${REPO}:8.0.22-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.22-nginx-alpine",
     ]
 }
 
@@ -457,13 +465,9 @@ target "8.0.22-cli-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0-cli-alpine",
         "${REGISTRY}/${REPO}:8.0-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0-alpine",
         "${REGISTRY}/${REPO}:8.0.22-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-cli-alpine",
         "${REGISTRY}/${REPO}:8.0.22-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-alpine",
     ]
 }
 
@@ -478,9 +482,7 @@ target "8.0.22-fpm-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0-fpm-alpine",
         "${REGISTRY}/${REPO}:8.0.22-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-alpine",
     ]
 }
 
@@ -495,9 +497,7 @@ target "8.0.22-nginx-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0-nginx-alpine",
         "${REGISTRY}/${REPO}:8.0.22-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-alpine",
     ]
 }
 
@@ -626,11 +626,17 @@ target "7.4.30-cli-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:7-cli-alpine",
         "${REGISTRY}/${REPO}:7-alpine3.16",
+        "${REGISTRY}/${REPO}:7-alpine",
         "${REGISTRY}/${REPO}:7.4-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-cli-alpine",
         "${REGISTRY}/${REPO}:7.4-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-alpine",
         "${REGISTRY}/${REPO}:7.4.30-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.30-cli-alpine",
         "${REGISTRY}/${REPO}:7.4.30-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.30-alpine",
     ]
 }
 
@@ -645,8 +651,11 @@ target "7.4.30-fpm-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:7-fpm-alpine",
         "${REGISTRY}/${REPO}:7.4-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-fpm-alpine",
         "${REGISTRY}/${REPO}:7.4.30-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.30-fpm-alpine",
     ]
 }
 
@@ -661,8 +670,11 @@ target "7.4.30-nginx-alpine3.16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:7-nginx-alpine",
         "${REGISTRY}/${REPO}:7.4-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-nginx-alpine",
         "${REGISTRY}/${REPO}:7.4.30-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.30-nginx-alpine",
     ]
 }
 
@@ -677,17 +689,11 @@ target "7.4.30-cli-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:7-cli-alpine",
         "${REGISTRY}/${REPO}:7-alpine3.15",
-        "${REGISTRY}/${REPO}:7-alpine",
         "${REGISTRY}/${REPO}:7.4-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4-cli-alpine",
         "${REGISTRY}/${REPO}:7.4-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4-alpine",
         "${REGISTRY}/${REPO}:7.4.30-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4.30-cli-alpine",
         "${REGISTRY}/${REPO}:7.4.30-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4.30-alpine",
     ]
 }
 
@@ -702,11 +708,8 @@ target "7.4.30-fpm-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:7-fpm-alpine",
         "${REGISTRY}/${REPO}:7.4-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4-fpm-alpine",
         "${REGISTRY}/${REPO}:7.4.30-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4.30-fpm-alpine",
     ]
 }
 
@@ -721,11 +724,8 @@ target "7.4.30-nginx-alpine3.15" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:7-nginx-alpine",
         "${REGISTRY}/${REPO}:7.4-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4-nginx-alpine",
         "${REGISTRY}/${REPO}:7.4.30-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:7.4.30-nginx-alpine",
     ]
 }
 
