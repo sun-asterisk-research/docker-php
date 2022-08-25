@@ -6,12 +6,16 @@ contains() {
     echo "${@:2}" | grep -wq $1
 }
 
+get_version() {
+    echo "$1" | awk -F '[\._]' '{print $1"."$2"."$3}'
+}
+
 get_major() {
-    echo "$1" | awk -F '.' '{print $1;}'
+    echo "$1" | awk -F '[\._]' '{print $1}'
 }
 
 get_minor() {
-    echo "$1" | awk -F '.' '{print $1"."$2;}'
+    echo "$1" | awk -F '[\._]' '{print $1"."$2}'
 }
 
 indent() {
@@ -84,7 +88,7 @@ meta_from_full_tag() {
     fi
 
     cat << EOF
-local php_version="$php_version"
+local php_version="$(get_version $php_version)"
 local php_major="$(get_major $php_version)"
 local php_minor="$(get_minor $php_version)"
 
@@ -188,6 +192,10 @@ generate_tags() {
     echo "$tags"
 }
 
+format_bake_target() {
+    sed 's/\./_/g'
+}
+
 generate_bake_file_target() {
     eval $(meta_from_full_tag $1)
 
@@ -229,7 +237,12 @@ generate_bake_file_target() {
         | trim
     )
 
+    bake_target=$(echo "$php_version-$variant-$distro_release" | format_bake_target)
+    bake_target_minor_version=$(echo "$php_minor-$variant-$distro_release" | format_bake_target)
+
     tpl docker-bake-target.template \
+        bake_target \
+        bake_target_minor_version \
         php_version \
         php_minor \
         variant \
@@ -244,7 +257,7 @@ generate_bake_file() {
 
     write_warn_edit $bake_file
 
-    local targets=$(echo "$@" | format_list | indent 1 4 | trim)
+    local targets=$(echo "$@" | format_bake_target | format_list | indent 1 4 | trim)
 
     tpl docker-bake.template targets >> $bake_file
 
@@ -261,7 +274,7 @@ generate_workflow() {
     mkdir -p .github/workflows
     write_warn_edit $workflow_file
 
-    local targets=$(echo "$@" | format_list 2 | indent 5 2 | trim)
+    local targets=$(echo "$@" | format_bake_target | format_list 2 | indent 5 2 | trim)
     local platforms=$(echo $platforms | sed 's/ /,/g')
 
     tpl ci.yml.template targets platforms >> $workflow_file

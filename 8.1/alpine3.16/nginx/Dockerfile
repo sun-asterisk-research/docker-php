@@ -58,6 +58,6 @@ ENV DOCUMENT_ROOT=/var/www/html
 
 EXPOSE 80 443
 
-ENTRYPOINT [ "/init" ]
+ENTRYPOINT [ "docker-php-entrypoint" ]
 
-CMD [ "nginx", "-g", "daemon off;" ]
+CMD [ "/init", "nginx", "-g", "daemon off;" ]

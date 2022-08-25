@@ -2,4 +2,4 @@
 
 sed -Ei 's/^(access.log)/; \1/' /usr/local/etc/php-fpm.d/*.conf
 
-exec docker-php-entrypoint php-fpm
+exec php-fpm
