@@ -1,11 +1,9 @@
 php_versions:
-- 7.4.30
-- 8.0.22
-- 8.1.9
+- 7.3.33
 
 alpine_releases:
-- alpine3.16
 - alpine3.15
+- alpine3.14
 
 debian_releases:
 - bullseye
@@ -16,7 +14,7 @@ default_php_7_version: 7.4
 default_php_8_version: 8.1
 default_variant: cli
 default_distro: debian
-default_alpine_release: alpine3.16
+default_alpine_release: alpine3.15
 default_debian_release: bullseye
 
 platforms:
