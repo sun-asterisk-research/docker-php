@@ -10,30 +10,30 @@ variable "REPO" {
 
 group "default" {
     targets = [
-        "8_1_9-cli-bullseye",
-        "8_1_9-fpm-bullseye",
-        "8_1_9-nginx-bullseye",
-        "8_1_9-cli-buster",
-        "8_1_9-fpm-buster",
-        "8_1_9-nginx-buster",
-        "8_1_9-cli-alpine3_16",
-        "8_1_9-fpm-alpine3_16",
-        "8_1_9-nginx-alpine3_16",
-        "8_1_9-cli-alpine3_15",
-        "8_1_9-fpm-alpine3_15",
-        "8_1_9-nginx-alpine3_15",
-        "8_0_22-cli-bullseye",
-        "8_0_22-fpm-bullseye",
-        "8_0_22-nginx-bullseye",
-        "8_0_22-cli-buster",
-        "8_0_22-fpm-buster",
-        "8_0_22-nginx-buster",
-        "8_0_22-cli-alpine3_16",
-        "8_0_22-fpm-alpine3_16",
-        "8_0_22-nginx-alpine3_16",
-        "8_0_22-cli-alpine3_15",
-        "8_0_22-fpm-alpine3_15",
-        "8_0_22-nginx-alpine3_15",
+        "8_1_10-cli-bullseye",
+        "8_1_10-fpm-bullseye",
+        "8_1_10-nginx-bullseye",
+        "8_1_10-cli-buster",
+        "8_1_10-fpm-buster",
+        "8_1_10-nginx-buster",
+        "8_1_10-cli-alpine3_16",
+        "8_1_10-fpm-alpine3_16",
+        "8_1_10-nginx-alpine3_16",
+        "8_1_10-cli-alpine3_15",
+        "8_1_10-fpm-alpine3_15",
+        "8_1_10-nginx-alpine3_15",
+        "8_0_23-cli-bullseye",
+        "8_0_23-fpm-bullseye",
+        "8_0_23-nginx-bullseye",
+        "8_0_23-cli-buster",
+        "8_0_23-fpm-buster",
+        "8_0_23-nginx-buster",
+        "8_0_23-cli-alpine3_16",
+        "8_0_23-fpm-alpine3_16",
+        "8_0_23-nginx-alpine3_16",
+        "8_0_23-cli-alpine3_15",
+        "8_0_23-fpm-alpine3_15",
+        "8_0_23-nginx-alpine3_15",
         "7_4_30-cli-bullseye",
         "7_4_30-fpm-bullseye",
         "7_4_30-nginx-bullseye",
@@ -49,7 +49,7 @@ group "default" {
     ]
 }
 
-target "8_1_9-cli-bullseye" {
+target "8_1_10-cli-bullseye" {
     context = "./8.1/bullseye/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-cli-bullseye"
@@ -63,10 +63,10 @@ target "8_1_9-cli-bullseye" {
         "${REGISTRY}/${REPO}:8.1-cli",
         "${REGISTRY}/${REPO}:8.1-bullseye",
         "${REGISTRY}/${REPO}:8.1",
-        "${REGISTRY}/${REPO}:8.1.9-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.1.9-cli",
-        "${REGISTRY}/${REPO}:8.1.9-bullseye",
-        "${REGISTRY}/${REPO}:8.1.9",
+        "${REGISTRY}/${REPO}:8.1.10-cli-bullseye",
+        "${REGISTRY}/${REPO}:8.1.10-cli",
+        "${REGISTRY}/${REPO}:8.1.10-bullseye",
+        "${REGISTRY}/${REPO}:8.1.10",
         "${REGISTRY}/${REPO}:cli-bullseye",
         "${REGISTRY}/${REPO}:cli",
         "${REGISTRY}/${REPO}:bullseye",
@@ -75,10 +75,10 @@ target "8_1_9-cli-bullseye" {
 }
 
 target "8_1-cli-bullseye" {
-    inherits = ["8_1_9-cli-bullseye"]
+    inherits = ["8_1_10-cli-bullseye"]
 }
 
-target "8_1_9-fpm-bullseye" {
+target "8_1_10-fpm-bullseye" {
     context = "./8.1/bullseye/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-fpm-bullseye"
@@ -88,18 +88,18 @@ target "8_1_9-fpm-bullseye" {
         "${REGISTRY}/${REPO}:8-fpm",
         "${REGISTRY}/${REPO}:8.1-fpm-bullseye",
         "${REGISTRY}/${REPO}:8.1-fpm",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-bullseye",
-        "${REGISTRY}/${REPO}:8.1.9-fpm",
+        "${REGISTRY}/${REPO}:8.1.10-fpm-bullseye",
+        "${REGISTRY}/${REPO}:8.1.10-fpm",
         "${REGISTRY}/${REPO}:fpm-bullseye",
         "${REGISTRY}/${REPO}:fpm",
     ]
 }
 
 target "8_1-fpm-bullseye" {
-    inherits = ["8_1_9-fpm-bullseye"]
+    inherits = ["8_1_10-fpm-bullseye"]
 }
 
-target "8_1_9-nginx-bullseye" {
+target "8_1_10-nginx-bullseye" {
     context = "./8.1/bullseye/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-nginx-bullseye"
@@ -109,18 +109,18 @@ target "8_1_9-nginx-bullseye" {
         "${REGISTRY}/${REPO}:8-nginx",
         "${REGISTRY}/${REPO}:8.1-nginx-bullseye",
         "${REGISTRY}/${REPO}:8.1-nginx",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-bullseye",
-        "${REGISTRY}/${REPO}:8.1.9-nginx",
+        "${REGISTRY}/${REPO}:8.1.10-nginx-bullseye",
+        "${REGISTRY}/${REPO}:8.1.10-nginx",
         "${REGISTRY}/${REPO}:nginx-bullseye",
         "${REGISTRY}/${REPO}:nginx",
     ]
 }
 
 target "8_1-nginx-bullseye" {
-    inherits = ["8_1_9-nginx-bullseye"]
+    inherits = ["8_1_10-nginx-bullseye"]
 }
 
-target "8_1_9-cli-buster" {
+target "8_1_10-cli-buster" {
     context = "./8.1/buster/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-cli-buster"
@@ -130,18 +130,18 @@ target "8_1_9-cli-buster" {
         "${REGISTRY}/${REPO}:8-buster",
         "${REGISTRY}/${REPO}:8.1-cli-buster",
         "${REGISTRY}/${REPO}:8.1-buster",
-        "${REGISTRY}/${REPO}:8.1.9-cli-buster",
-        "${REGISTRY}/${REPO}:8.1.9-buster",
+        "${REGISTRY}/${REPO}:8.1.10-cli-buster",
+        "${REGISTRY}/${REPO}:8.1.10-buster",
         "${REGISTRY}/${REPO}:cli-buster",
         "${REGISTRY}/${REPO}:buster",
     ]
 }
 
 target "8_1-cli-buster" {
-    inherits = ["8_1_9-cli-buster"]
+    inherits = ["8_1_10-cli-buster"]
 }
 
-target "8_1_9-fpm-buster" {
+target "8_1_10-fpm-buster" {
     context = "./8.1/buster/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-fpm-buster"
@@ -149,16 +149,16 @@ target "8_1_9-fpm-buster" {
     tags = [
         "${REGISTRY}/${REPO}:8-fpm-buster",
         "${REGISTRY}/${REPO}:8.1-fpm-buster",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-buster",
+        "${REGISTRY}/${REPO}:8.1.10-fpm-buster",
         "${REGISTRY}/${REPO}:fpm-buster",
     ]
 }
 
 target "8_1-fpm-buster" {
-    inherits = ["8_1_9-fpm-buster"]
+    inherits = ["8_1_10-fpm-buster"]
 }
 
-target "8_1_9-nginx-buster" {
+target "8_1_10-nginx-buster" {
     context = "./8.1/buster/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-nginx-buster"
@@ -166,16 +166,16 @@ target "8_1_9-nginx-buster" {
     tags = [
         "${REGISTRY}/${REPO}:8-nginx-buster",
         "${REGISTRY}/${REPO}:8.1-nginx-buster",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-buster",
+        "${REGISTRY}/${REPO}:8.1.10-nginx-buster",
         "${REGISTRY}/${REPO}:nginx-buster",
     ]
 }
 
 target "8_1-nginx-buster" {
-    inherits = ["8_1_9-nginx-buster"]
+    inherits = ["8_1_10-nginx-buster"]
 }
 
-target "8_1_9-cli-alpine3_16" {
+target "8_1_10-cli-alpine3_16" {
     context = "./8.1/alpine3.16/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.16"
@@ -189,10 +189,10 @@ target "8_1_9-cli-alpine3_16" {
         "${REGISTRY}/${REPO}:8.1-cli-alpine",
         "${REGISTRY}/${REPO}:8.1-alpine3.16",
         "${REGISTRY}/${REPO}:8.1-alpine",
-        "${REGISTRY}/${REPO}:8.1.9-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1.9-cli-alpine",
-        "${REGISTRY}/${REPO}:8.1.9-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1.9-alpine",
+        "${REGISTRY}/${REPO}:8.1.10-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.10-cli-alpine",
+        "${REGISTRY}/${REPO}:8.1.10-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.10-alpine",
         "${REGISTRY}/${REPO}:cli-alpine3.16",
         "${REGISTRY}/${REPO}:cli-alpine",
         "${REGISTRY}/${REPO}:alpine3.16",
@@ -201,10 +201,10 @@ target "8_1_9-cli-alpine3_16" {
 }
 
 target "8_1-cli-alpine3_16" {
-    inherits = ["8_1_9-cli-alpine3_16"]
+    inherits = ["8_1_10-cli-alpine3_16"]
 }
 
-target "8_1_9-fpm-alpine3_16" {
+target "8_1_10-fpm-alpine3_16" {
     context = "./8.1/alpine3.16/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.16"
@@ -214,18 +214,18 @@ target "8_1_9-fpm-alpine3_16" {
         "${REGISTRY}/${REPO}:8-fpm-alpine",
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.16",
         "${REGISTRY}/${REPO}:8.1-fpm-alpine",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-alpine",
+        "${REGISTRY}/${REPO}:8.1.10-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.10-fpm-alpine",
         "${REGISTRY}/${REPO}:fpm-alpine3.16",
         "${REGISTRY}/${REPO}:fpm-alpine",
     ]
 }
 
 target "8_1-fpm-alpine3_16" {
-    inherits = ["8_1_9-fpm-alpine3_16"]
+    inherits = ["8_1_10-fpm-alpine3_16"]
 }
 
-target "8_1_9-nginx-alpine3_16" {
+target "8_1_10-nginx-alpine3_16" {
     context = "./8.1/alpine3.16/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.16"
@@ -235,18 +235,18 @@ target "8_1_9-nginx-alpine3_16" {
         "${REGISTRY}/${REPO}:8-nginx-alpine",
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.16",
         "${REGISTRY}/${REPO}:8.1-nginx-alpine",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-alpine",
+        "${REGISTRY}/${REPO}:8.1.10-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.10-nginx-alpine",
         "${REGISTRY}/${REPO}:nginx-alpine3.16",
         "${REGISTRY}/${REPO}:nginx-alpine",
     ]
 }
 
 target "8_1-nginx-alpine3_16" {
-    inherits = ["8_1_9-nginx-alpine3_16"]
+    inherits = ["8_1_10-nginx-alpine3_16"]
 }
 
-target "8_1_9-cli-alpine3_15" {
+target "8_1_10-cli-alpine3_15" {
     context = "./8.1/alpine3.15/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.15"
@@ -256,18 +256,18 @@ target "8_1_9-cli-alpine3_15" {
         "${REGISTRY}/${REPO}:8-alpine3.15",
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.15",
         "${REGISTRY}/${REPO}:8.1-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-alpine3.15",
+        "${REGISTRY}/${REPO}:8.1.10-cli-alpine3.15",
+        "${REGISTRY}/${REPO}:8.1.10-alpine3.15",
         "${REGISTRY}/${REPO}:cli-alpine3.15",
         "${REGISTRY}/${REPO}:alpine3.15",
     ]
 }
 
 target "8_1-cli-alpine3_15" {
-    inherits = ["8_1_9-cli-alpine3_15"]
+    inherits = ["8_1_10-cli-alpine3_15"]
 }
 
-target "8_1_9-fpm-alpine3_15" {
+target "8_1_10-fpm-alpine3_15" {
     context = "./8.1/alpine3.15/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.15"
@@ -275,16 +275,16 @@ target "8_1_9-fpm-alpine3_15" {
     tags = [
         "${REGISTRY}/${REPO}:8-fpm-alpine3.15",
         "${REGISTRY}/${REPO}:8.1-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-fpm-alpine3.15",
+        "${REGISTRY}/${REPO}:8.1.10-fpm-alpine3.15",
         "${REGISTRY}/${REPO}:fpm-alpine3.15",
     ]
 }
 
 target "8_1-fpm-alpine3_15" {
-    inherits = ["8_1_9-fpm-alpine3_15"]
+    inherits = ["8_1_10-fpm-alpine3_15"]
 }
 
-target "8_1_9-nginx-alpine3_15" {
+target "8_1_10-nginx-alpine3_15" {
     context = "./8.1/alpine3.15/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.15"
@@ -292,16 +292,16 @@ target "8_1_9-nginx-alpine3_15" {
     tags = [
         "${REGISTRY}/${REPO}:8-nginx-alpine3.15",
         "${REGISTRY}/${REPO}:8.1-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.1.9-nginx-alpine3.15",
+        "${REGISTRY}/${REPO}:8.1.10-nginx-alpine3.15",
         "${REGISTRY}/${REPO}:nginx-alpine3.15",
     ]
 }
 
 target "8_1-nginx-alpine3_15" {
-    inherits = ["8_1_9-nginx-alpine3_15"]
+    inherits = ["8_1_10-nginx-alpine3_15"]
 }
 
-target "8_0_22-cli-bullseye" {
+target "8_0_23-cli-bullseye" {
     context = "./8.0/bullseye/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-cli-bullseye"
@@ -311,18 +311,18 @@ target "8_0_22-cli-bullseye" {
         "${REGISTRY}/${REPO}:8.0-cli",
         "${REGISTRY}/${REPO}:8.0-bullseye",
         "${REGISTRY}/${REPO}:8.0",
-        "${REGISTRY}/${REPO}:8.0.22-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.0.22-cli",
-        "${REGISTRY}/${REPO}:8.0.22-bullseye",
-        "${REGISTRY}/${REPO}:8.0.22",
+        "${REGISTRY}/${REPO}:8.0.23-cli-bullseye",
+        "${REGISTRY}/${REPO}:8.0.23-cli",
+        "${REGISTRY}/${REPO}:8.0.23-bullseye",
+        "${REGISTRY}/${REPO}:8.0.23",
     ]
 }
 
 target "8_0-cli-bullseye" {
-    inherits = ["8_0_22-cli-bullseye"]
+    inherits = ["8_0_23-cli-bullseye"]
 }
 
-target "8_0_22-fpm-bullseye" {
+target "8_0_23-fpm-bullseye" {
     context = "./8.0/bullseye/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-fpm-bullseye"
@@ -330,16 +330,16 @@ target "8_0_22-fpm-bullseye" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-bullseye",
         "${REGISTRY}/${REPO}:8.0-fpm",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-bullseye",
-        "${REGISTRY}/${REPO}:8.0.22-fpm",
+        "${REGISTRY}/${REPO}:8.0.23-fpm-bullseye",
+        "${REGISTRY}/${REPO}:8.0.23-fpm",
     ]
 }
 
 target "8_0-fpm-bullseye" {
-    inherits = ["8_0_22-fpm-bullseye"]
+    inherits = ["8_0_23-fpm-bullseye"]
 }
 
-target "8_0_22-nginx-bullseye" {
+target "8_0_23-nginx-bullseye" {
     context = "./8.0/bullseye/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-nginx-bullseye"
@@ -347,16 +347,16 @@ target "8_0_22-nginx-bullseye" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-bullseye",
         "${REGISTRY}/${REPO}:8.0-nginx",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-bullseye",
-        "${REGISTRY}/${REPO}:8.0.22-nginx",
+        "${REGISTRY}/${REPO}:8.0.23-nginx-bullseye",
+        "${REGISTRY}/${REPO}:8.0.23-nginx",
     ]
 }
 
 target "8_0-nginx-bullseye" {
-    inherits = ["8_0_22-nginx-bullseye"]
+    inherits = ["8_0_23-nginx-bullseye"]
 }
 
-target "8_0_22-cli-buster" {
+target "8_0_23-cli-buster" {
     context = "./8.0/buster/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-cli-buster"
@@ -364,46 +364,46 @@ target "8_0_22-cli-buster" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-buster",
         "${REGISTRY}/${REPO}:8.0-buster",
-        "${REGISTRY}/${REPO}:8.0.22-cli-buster",
-        "${REGISTRY}/${REPO}:8.0.22-buster",
+        "${REGISTRY}/${REPO}:8.0.23-cli-buster",
+        "${REGISTRY}/${REPO}:8.0.23-buster",
     ]
 }
 
 target "8_0-cli-buster" {
-    inherits = ["8_0_22-cli-buster"]
+    inherits = ["8_0_23-cli-buster"]
 }
 
-target "8_0_22-fpm-buster" {
+target "8_0_23-fpm-buster" {
     context = "./8.0/buster/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-fpm-buster"
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-buster",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-buster",
+        "${REGISTRY}/${REPO}:8.0.23-fpm-buster",
     ]
 }
 
 target "8_0-fpm-buster" {
-    inherits = ["8_0_22-fpm-buster"]
+    inherits = ["8_0_23-fpm-buster"]
 }
 
-target "8_0_22-nginx-buster" {
+target "8_0_23-nginx-buster" {
     context = "./8.0/buster/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-nginx-buster"
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-buster",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-buster",
+        "${REGISTRY}/${REPO}:8.0.23-nginx-buster",
     ]
 }
 
 target "8_0-nginx-buster" {
-    inherits = ["8_0_22-nginx-buster"]
+    inherits = ["8_0_23-nginx-buster"]
 }
 
-target "8_0_22-cli-alpine3_16" {
+target "8_0_23-cli-alpine3_16" {
     context = "./8.0/alpine3.16/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.16"
@@ -413,18 +413,18 @@ target "8_0_22-cli-alpine3_16" {
         "${REGISTRY}/${REPO}:8.0-cli-alpine",
         "${REGISTRY}/${REPO}:8.0-alpine3.16",
         "${REGISTRY}/${REPO}:8.0-alpine",
-        "${REGISTRY}/${REPO}:8.0.22-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0.22-cli-alpine",
-        "${REGISTRY}/${REPO}:8.0.22-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0.22-alpine",
+        "${REGISTRY}/${REPO}:8.0.23-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.23-cli-alpine",
+        "${REGISTRY}/${REPO}:8.0.23-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.23-alpine",
     ]
 }
 
 target "8_0-cli-alpine3_16" {
-    inherits = ["8_0_22-cli-alpine3_16"]
+    inherits = ["8_0_23-cli-alpine3_16"]
 }
 
-target "8_0_22-fpm-alpine3_16" {
+target "8_0_23-fpm-alpine3_16" {
     context = "./8.0/alpine3.16/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.16"
@@ -432,16 +432,16 @@ target "8_0_22-fpm-alpine3_16" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.16",
         "${REGISTRY}/${REPO}:8.0-fpm-alpine",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-alpine",
+        "${REGISTRY}/${REPO}:8.0.23-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.23-fpm-alpine",
     ]
 }
 
 target "8_0-fpm-alpine3_16" {
-    inherits = ["8_0_22-fpm-alpine3_16"]
+    inherits = ["8_0_23-fpm-alpine3_16"]
 }
 
-target "8_0_22-nginx-alpine3_16" {
+target "8_0_23-nginx-alpine3_16" {
     context = "./8.0/alpine3.16/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.16"
@@ -449,16 +449,16 @@ target "8_0_22-nginx-alpine3_16" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.16",
         "${REGISTRY}/${REPO}:8.0-nginx-alpine",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-alpine",
+        "${REGISTRY}/${REPO}:8.0.23-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.23-nginx-alpine",
     ]
 }
 
 target "8_0-nginx-alpine3_16" {
-    inherits = ["8_0_22-nginx-alpine3_16"]
+    inherits = ["8_0_23-nginx-alpine3_16"]
 }
 
-target "8_0_22-cli-alpine3_15" {
+target "8_0_23-cli-alpine3_15" {
     context = "./8.0/alpine3.15/cli"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.15"
@@ -466,43 +466,43 @@ target "8_0_22-cli-alpine3_15" {
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.15",
         "${REGISTRY}/${REPO}:8.0-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-cli-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-alpine3.15",
+        "${REGISTRY}/${REPO}:8.0.23-cli-alpine3.15",
+        "${REGISTRY}/${REPO}:8.0.23-alpine3.15",
     ]
 }
 
 target "8_0-cli-alpine3_15" {
-    inherits = ["8_0_22-cli-alpine3_15"]
+    inherits = ["8_0_23-cli-alpine3_15"]
 }
 
-target "8_0_22-fpm-alpine3_15" {
+target "8_0_23-fpm-alpine3_15" {
     context = "./8.0/alpine3.15/fpm"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.15"
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-fpm-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-fpm-alpine3.15",
+        "${REGISTRY}/${REPO}:8.0.23-fpm-alpine3.15",
     ]
 }
 
 target "8_0-fpm-alpine3_15" {
-    inherits = ["8_0_22-fpm-alpine3_15"]
+    inherits = ["8_0_23-fpm-alpine3_15"]
 }
 
-target "8_0_22-nginx-alpine3_15" {
+target "8_0_23-nginx-alpine3_15" {
     context = "./8.0/alpine3.15/nginx"
     cache-from = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.15"
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-nginx-alpine3.15",
-        "${REGISTRY}/${REPO}:8.0.22-nginx-alpine3.15",
+        "${REGISTRY}/${REPO}:8.0.23-nginx-alpine3.15",
     ]
 }
 
 target "8_0-nginx-alpine3_15" {
-    inherits = ["8_0_22-nginx-alpine3_15"]
+    inherits = ["8_0_23-nginx-alpine3_15"]
 }
 
 target "7_4_30-cli-bullseye" {
