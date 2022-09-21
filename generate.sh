@@ -19,12 +19,11 @@ get_minor() {
 }
 
 indent() {
-    level="$1"
-    per_level="$2"
+    local level="$1"
+    local per_level="$2"
 
-    nspaces=$((level * per_level))
-
-    spaces="$(printf %${nspaces}s)"
+    local nspaces=$((level * per_level))
+    local spaces="$(printf %${nspaces}s)"
 
     sed -E "s/^/$spaces/g"
 }
@@ -59,7 +58,7 @@ tpl() {
 }
 
 format_list() {
-    indent=${1:-4}
+    local indent=${1:-4}
 
     echo "["
     trim | sed -E 's/[[:space:]]+/\n/g' | sed -E 's/^(.*)$/\\"\1\\",/' | indent 1 "$indent"
