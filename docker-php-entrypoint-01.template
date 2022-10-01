@@ -1,3 +1,5 @@
+{{ shebang }}
+
 set -e
 
 write_env_config() {
