@@ -2,79 +2,7 @@
 
 set -e
 
-contains() {
-    echo "${@:2}" | grep -wq $1
-}
-
-get_version() {
-    echo "$1" | awk -F '[\._]' '{print $1"."$2"."$3}'
-}
-
-get_major() {
-    echo "$1" | awk -F '[\._]' '{print $1}'
-}
-
-get_minor() {
-    echo "$1" | awk -F '[\._]' '{print $1"."$2}'
-}
-
-indent() {
-    local level="$1"
-    local per_level="$2"
-
-    local nspaces=$((level * per_level))
-    local spaces="$(printf %${nspaces}s)"
-
-    sed -E "s/^/$spaces/g"
-}
-
-trim() {
-    local delim=${1:-'[:space:]'}
-    local str="$(cat)"
-    str="${str#"${str%%[!$delim]*}"}"
-    str="${str%"${str##*[!$delim]}"}"
-    echo "$str"
-}
-
-tpl() {
-    local vars=""
-    local script="{"
-
-    for var_name in ${@:2}; do
-        local tpl_var_name=$(echo "$var_name" | awk -F '=' {'print $1'})
-        local script_var_name=$(echo "$var_name" | awk -F '=' {'print $2'})
-
-        if [ -z "$script_var_name" ]; then
-            script_var_name="$tpl_var_name"
-        fi
-
-        script="$script gsub(\"{{ $tpl_var_name }}\",$tpl_var_name);"
-        vars="$vars -v $tpl_var_name=\"${!script_var_name}\""
-    done
-
-    script="$script }1"
-
-    eval awk "$vars" "'$script'" "$1"
-}
-
-format_list() {
-    local indent=${1:-4}
-
-    echo "["
-    trim | sed -E 's/[[:space:]]+/\n/g' | sed -E 's/^(.*)$/\\"\1\\",/' | indent 1 "$indent"
-    echo "]"
-}
-
-get_versions() {
-    cat versions.yml \
-        | tr "\n" "\r" \
-        | sed 's/\r-//g' \
-        | tr '\r' '\n' \
-        | sed -E \
-            -e's/:[^:\/\/]/="/g' \
-            -e 's/(.+)$/\1"/g' \
-            -e 's/ *=/=/g'
-}
+source generate_utils.sh
 
 meta_from_full_tag() {
     local php_version variant distro_release
@@ -104,10 +32,6 @@ default_php_major="$(get_major $default_php_version)"
 default_php_minor="$(get_minor $default_php_version)"
 eval default_distro_release=\$"default_${default_distro}_release"
 
-write_warn_edit() {
-    echo -e "# NOTE: This file was generated via generate.sh. Don't edit it directly\n" > $1
-}
-
 generate_dockerfile() {
     eval $(meta_from_full_tag $1)
 
@@ -126,26 +50,20 @@ generate_dockerfile() {
 
     write_warn_edit $dockerfile
 
-    # Base Dockerfile
-    tpl "Dockerfile-base-$distro.template" \
-        version=php_version \
-        variant=php_variant \
-        distro_release \
-        >> $dockerfile
+    for tpl in $(ls Dockerfile*.template | grep -E "Dockerfile-[0-9]+(|-${variant})(-${distro})?.template"); do
+        # Base Dockerfile
+        tpl "$tpl" \
+            version=php_version \
+            variant=php_variant \
+            distro_release \
+            >> $dockerfile
+    done
 
     if [ "$php_minor" \< 7.4 ]; then
         sed -Ei -e 's/--with-jpeg/--with-jpeg-dir=\/usr\/include/' $dockerfile
     fi
 
-    cat "Dockerfile-base.template" >> $dockerfile
-
-    # Variant-specific commands
-    if [ -f "Dockerfile-$variant-$distro.template" ]; then
-        cat "Dockerfile-$variant-$distro.template" >> $dockerfile
-    fi
-    cat "Dockerfile-$variant.template" >> $dockerfile
-
-    # Root
+    # RootFS
     if [ -d "$variant" ]; then
         cp -rT $variant "$dir/rootfs"
     fi
@@ -153,22 +71,19 @@ generate_dockerfile() {
     # Entrypoint
     local entrypoint="$dir/rootfs/usr/local/bin/docker-php-entrypoint"
 
-    mkdir -p "$dir/rootfs/usr/local/bin" && cp docker-php-entrypoint.template "$entrypoint"
+    mkdir -p "$dir/rootfs/usr/local/bin"
+    > $entrypoint
 
-    if [ "$php_variant" = fpm ]; then
-        cat docker-php-entrypoint-fpm.template >> "$entrypoint"
-    fi
-
-    cat docker-php-entrypoint-exec.template >> "$entrypoint"
-
-    # Write entrypoint shebang
     if [ "$distro" = debian ]; then
         local shebang="#!/bin/bash"
     else
         local shebang="#!/bin/sh"
     fi
 
-    sed -i "1i$shebang\n" "$entrypoint"
+    for tpl in $(ls docker-php-entrypoint*.template | grep -E "docker-php-entrypoint-[0-9]+(|-${php_variant})(-${distro})?.template"); do
+        # Base Dockerfile
+        tpl "$tpl" shebang >> $entrypoint
+    done
 }
 
 generate_tags() {
