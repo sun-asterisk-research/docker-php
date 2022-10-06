@@ -1,7 +1,7 @@
 php_versions:
-- 7.4.30
-- 8.0.23
-- 8.1.10
+- 7.4.32
+- 8.0.24
+- 8.1.11
 
 alpine_releases:
 - alpine3.16
