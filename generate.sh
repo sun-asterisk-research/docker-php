@@ -73,6 +73,7 @@ generate_dockerfile() {
 
     mkdir -p "$dir/rootfs/usr/local/bin"
     > $entrypoint
+    chmod +x $entrypoint
 
     if [ "$distro" = debian ]; then
         local shebang="#!/bin/bash"
