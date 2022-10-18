@@ -35,31 +35,37 @@ trim() {
 }
 
 tpl() {
-    local vars=""
-    local script="{"
+    local vars
+    local subs
+    local args
+
+    local argi=2
+
+    local tpl_var_name
+    local script_var_name
 
     for var_name in ${@:2}; do
-        local tpl_var_name=$(echo "$var_name" | awk -F '=' {'print $1'})
-        local script_var_name=$(echo "$var_name" | awk -F '=' {'print $2'})
+        read tpl_var_name script_var_name <<< $(echo "$var_name" | awk -F '=' '{print $1,$2}')
 
         if [ -z "$script_var_name" ]; then
             script_var_name="$tpl_var_name"
         fi
 
-        script="$script gsub(\"{{ $tpl_var_name }}\",$tpl_var_name);"
-        vars="$vars -v $tpl_var_name=\"${!script_var_name}\""
+        vars="$vars $tpl_var_name=ARGV[$argi]; ARGV[$argi]=\"\";"
+        subs="$subs gsub(\"{{ $tpl_var_name }}\",$tpl_var_name);"
+        args="$args \"\$$script_var_name\""
+
+        argi=$((argi + 1))
     done
 
-    script="$script }1"
-
-    eval awk "$vars" "'$script'" "$1"
+    eval "awk 'BEGIN{ $vars } { $subs }1' $1 $args"
 }
 
 format_list() {
     local indent=${1:-4}
 
     echo "["
-    trim | sed -E 's/[[:space:]]+/\n/g' | sed -E 's/^(.*)$/\\"\1\\",/' | indent 1 "$indent"
+    trim | sed -E 's/[[:space:]]+/\n/g' | sed -E 's/^(.*)$/"\1",/' | indent 1 "$indent"
     echo "]"
 }
 

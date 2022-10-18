@@ -6,7 +6,7 @@ source generate_utils.sh
 
 meta_from_full_tag() {
     local php_version variant distro_release
-    IFS='-' read php_version variant distro_release <<< $1
+    IFS='-' read php_version variant distro_release <<< "$1"
 
     if contains "$distro_release" "$debian_releases"; then
         local distro=debian
@@ -26,12 +26,6 @@ local distro="$distro"
 EOF
 }
 
-eval $(get_versions)
-
-default_php_major="$(get_major $default_php_version)"
-default_php_minor="$(get_minor $default_php_version)"
-eval default_distro_release=\$"default_${default_distro}_release"
-
 generate_dockerfile() {
     eval $(meta_from_full_tag $1)
 
@@ -50,7 +44,7 @@ generate_dockerfile() {
 
     write_warn_edit $dockerfile
 
-    for tpl in $(ls Dockerfile*.template | grep -E "Dockerfile-[0-9]+(|-${variant})(-${distro})?.template"); do
+    for tpl in $(ls Dockerfile*.template | grep -E "Dockerfile-[0-9]+(-${variant})?(-${distro})?\.template"); do
         # Base Dockerfile
         tpl "$tpl" \
             version=php_version \
@@ -65,7 +59,8 @@ generate_dockerfile() {
 
     # RootFS
     if [ -d "$variant" ]; then
-        cp -rT $variant "$dir/rootfs"
+        mkdir -p "$dir/rootfs"
+        cp -r "$variant/." "$dir/rootfs"
     fi
 
     # Entrypoint
@@ -73,6 +68,7 @@ generate_dockerfile() {
 
     mkdir -p "$dir/rootfs/usr/local/bin"
     > $entrypoint
+    chmod 0755 $entrypoint
 
     if [ "$distro" = debian ]; then
         local shebang="#!/bin/bash"
@@ -80,7 +76,7 @@ generate_dockerfile() {
         local shebang="#!/bin/sh"
     fi
 
-    for tpl in $(ls docker-php-entrypoint*.template | grep -E "docker-php-entrypoint-[0-9]+(|-${php_variant})(-${distro})?.template"); do
+    for tpl in $(ls docker-php-entrypoint*.template | grep -E "docker-php-entrypoint-[0-9]+(-${php_variant})?(-${distro})?\.template"); do
         # Base Dockerfile
         tpl "$tpl" shebang >> $entrypoint
     done
@@ -145,7 +141,7 @@ generate_bake_file_target() {
 
     tags=$(
         generate_tags "$version_tags" "$variant_tags" "$distro_tags" \
-        | sed -E 's/(^|[[:space:]])/\1\\${REGISTRY}\/\\${REPO}:/g' \
+        | sed -E 's/(^|[[:space:]])/\1${REGISTRY}\/${REPO}:/g' \
         | format_list \
         | indent 1 4 \
         | trim
@@ -223,6 +219,12 @@ clean_all() {
     rm -f docker-bake.hcl
     rm -f .github/workflows/ci.yml
 }
+
+eval $(get_versions)
+
+default_php_major="$(get_major $default_php_version)"
+default_php_minor="$(get_minor $default_php_version)"
+eval default_distro_release=\$"default_${default_distro}_release"
 
 if [ "$#" = 0 ]; then
     generate_all
