@@ -1,12 +1,14 @@
-name: 'PHP {{ php_minor }}'
+# NOTE: This file was generated via generate.sh. Don't edit it directly
+
+name: 'PHP 7.4'
 
 on:
   pull_request:
     paths:
-      - {{ php_minor }}/**
+      - 7.4/**
   push:
     paths:
-      - {{ php_minor }}/**
+      - 7.4/**
 
 defaults:
   run:
@@ -32,7 +34,20 @@ jobs:
     strategy:
       matrix:
         target:
-          {{ targets }}
+          [
+            "7_4_32-cli-bullseye",
+            "7_4_32-fpm-bullseye",
+            "7_4_32-nginx-bullseye",
+            "7_4_32-cli-buster",
+            "7_4_32-fpm-buster",
+            "7_4_32-nginx-buster",
+            "7_4_32-cli-alpine3_16",
+            "7_4_32-fpm-alpine3_16",
+            "7_4_32-nginx-alpine3_16",
+            "7_4_32-cli-alpine3_15",
+            "7_4_32-fpm-alpine3_15",
+            "7_4_32-nginx-alpine3_15",
+          ]
     env:
       DOCKER_HUB_PUSH: ${{ (secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN) && 'true' || 'false' }}
     steps:
@@ -63,7 +78,7 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           set: |
-            *.platform={{ platforms }}
+            *.platform=linux/amd64,linux/arm,linux/arm64
           push: ${{ github.event_name == 'push' }}
         if: ${{ env.DOCKER_HUB_PUSH == 'true' }}
       - name: Build and push to GitHub Container Registry
@@ -74,5 +89,5 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           set: |
-            *.platform={{ platforms }}
+            *.platform=linux/amd64,linux/arm,linux/arm64
           push: ${{ github.event_name == 'push' }}

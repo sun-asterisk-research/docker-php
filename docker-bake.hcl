@@ -8,47 +8,6 @@ variable "REPO" {
     default = "sunasteriskrnd/php"
 }
 
-group "default" {
-    targets = [
-        "8_1_11-cli-bullseye",
-        "8_1_11-fpm-bullseye",
-        "8_1_11-nginx-bullseye",
-        "8_1_11-cli-buster",
-        "8_1_11-fpm-buster",
-        "8_1_11-nginx-buster",
-        "8_1_11-cli-alpine3_16",
-        "8_1_11-fpm-alpine3_16",
-        "8_1_11-nginx-alpine3_16",
-        "8_1_11-cli-alpine3_15",
-        "8_1_11-fpm-alpine3_15",
-        "8_1_11-nginx-alpine3_15",
-        "8_0_24-cli-bullseye",
-        "8_0_24-fpm-bullseye",
-        "8_0_24-nginx-bullseye",
-        "8_0_24-cli-buster",
-        "8_0_24-fpm-buster",
-        "8_0_24-nginx-buster",
-        "8_0_24-cli-alpine3_16",
-        "8_0_24-fpm-alpine3_16",
-        "8_0_24-nginx-alpine3_16",
-        "8_0_24-cli-alpine3_15",
-        "8_0_24-fpm-alpine3_15",
-        "8_0_24-nginx-alpine3_15",
-        "7_4_32-cli-bullseye",
-        "7_4_32-fpm-bullseye",
-        "7_4_32-nginx-bullseye",
-        "7_4_32-cli-buster",
-        "7_4_32-fpm-buster",
-        "7_4_32-nginx-buster",
-        "7_4_32-cli-alpine3_16",
-        "7_4_32-fpm-alpine3_16",
-        "7_4_32-nginx-alpine3_16",
-        "7_4_32-cli-alpine3_15",
-        "7_4_32-fpm-alpine3_15",
-        "7_4_32-nginx-alpine3_15",
-    ]
-}
-
 target "8_1_11-cli-bullseye" {
     context = "./8.1/bullseye/cli"
     cache-from = [
@@ -56,20 +15,20 @@ target "8_1_11-cli-bullseye" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-cli-bullseye",
-        "${REGISTRY}/${REPO}:8-cli",
         "${REGISTRY}/${REPO}:8-bullseye",
+        "${REGISTRY}/${REPO}:8-cli",
         "${REGISTRY}/${REPO}:8",
         "${REGISTRY}/${REPO}:8.1-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.1-cli",
         "${REGISTRY}/${REPO}:8.1-bullseye",
+        "${REGISTRY}/${REPO}:8.1-cli",
         "${REGISTRY}/${REPO}:8.1",
         "${REGISTRY}/${REPO}:8.1.11-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.1.11-cli",
         "${REGISTRY}/${REPO}:8.1.11-bullseye",
+        "${REGISTRY}/${REPO}:8.1.11-cli",
         "${REGISTRY}/${REPO}:8.1.11",
         "${REGISTRY}/${REPO}:cli-bullseye",
-        "${REGISTRY}/${REPO}:cli",
         "${REGISTRY}/${REPO}:bullseye",
+        "${REGISTRY}/${REPO}:cli",
         "${REGISTRY}/${REPO}:latest",
     ]
 }
@@ -182,20 +141,20 @@ target "8_1_11-cli-alpine3_16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8-cli-alpine",
         "${REGISTRY}/${REPO}:8-alpine3.16",
+        "${REGISTRY}/${REPO}:8-cli-alpine",
         "${REGISTRY}/${REPO}:8-alpine",
         "${REGISTRY}/${REPO}:8.1-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1-cli-alpine",
         "${REGISTRY}/${REPO}:8.1-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1-cli-alpine",
         "${REGISTRY}/${REPO}:8.1-alpine",
         "${REGISTRY}/${REPO}:8.1.11-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.1.11-cli-alpine",
         "${REGISTRY}/${REPO}:8.1.11-alpine3.16",
+        "${REGISTRY}/${REPO}:8.1.11-cli-alpine",
         "${REGISTRY}/${REPO}:8.1.11-alpine",
         "${REGISTRY}/${REPO}:cli-alpine3.16",
-        "${REGISTRY}/${REPO}:cli-alpine",
         "${REGISTRY}/${REPO}:alpine3.16",
+        "${REGISTRY}/${REPO}:cli-alpine",
         "${REGISTRY}/${REPO}:alpine",
     ]
 }
@@ -308,12 +267,12 @@ target "8_0_24-cli-bullseye" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.0-cli",
         "${REGISTRY}/${REPO}:8.0-bullseye",
+        "${REGISTRY}/${REPO}:8.0-cli",
         "${REGISTRY}/${REPO}:8.0",
         "${REGISTRY}/${REPO}:8.0.24-cli-bullseye",
-        "${REGISTRY}/${REPO}:8.0.24-cli",
         "${REGISTRY}/${REPO}:8.0.24-bullseye",
+        "${REGISTRY}/${REPO}:8.0.24-cli",
         "${REGISTRY}/${REPO}:8.0.24",
     ]
 }
@@ -410,12 +369,12 @@ target "8_0_24-cli-alpine3_16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:8.0-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0-cli-alpine",
         "${REGISTRY}/${REPO}:8.0-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0-cli-alpine",
         "${REGISTRY}/${REPO}:8.0-alpine",
         "${REGISTRY}/${REPO}:8.0.24-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:8.0.24-cli-alpine",
         "${REGISTRY}/${REPO}:8.0.24-alpine3.16",
+        "${REGISTRY}/${REPO}:8.0.24-cli-alpine",
         "${REGISTRY}/${REPO}:8.0.24-alpine",
     ]
 }
@@ -512,16 +471,16 @@ target "7_4_32-cli-bullseye" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-cli-bullseye",
-        "${REGISTRY}/${REPO}:7-cli",
         "${REGISTRY}/${REPO}:7-bullseye",
+        "${REGISTRY}/${REPO}:7-cli",
         "${REGISTRY}/${REPO}:7",
         "${REGISTRY}/${REPO}:7.4-cli-bullseye",
-        "${REGISTRY}/${REPO}:7.4-cli",
         "${REGISTRY}/${REPO}:7.4-bullseye",
+        "${REGISTRY}/${REPO}:7.4-cli",
         "${REGISTRY}/${REPO}:7.4",
         "${REGISTRY}/${REPO}:7.4.32-cli-bullseye",
-        "${REGISTRY}/${REPO}:7.4.32-cli",
         "${REGISTRY}/${REPO}:7.4.32-bullseye",
+        "${REGISTRY}/${REPO}:7.4.32-cli",
         "${REGISTRY}/${REPO}:7.4.32",
     ]
 }
@@ -626,16 +585,16 @@ target "7_4_32-cli-alpine3_16" {
     ]
     tags = [
         "${REGISTRY}/${REPO}:7-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:7-cli-alpine",
         "${REGISTRY}/${REPO}:7-alpine3.16",
+        "${REGISTRY}/${REPO}:7-cli-alpine",
         "${REGISTRY}/${REPO}:7-alpine",
         "${REGISTRY}/${REPO}:7.4-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:7.4-cli-alpine",
         "${REGISTRY}/${REPO}:7.4-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-cli-alpine",
         "${REGISTRY}/${REPO}:7.4-alpine",
         "${REGISTRY}/${REPO}:7.4.32-cli-alpine3.16",
-        "${REGISTRY}/${REPO}:7.4.32-cli-alpine",
         "${REGISTRY}/${REPO}:7.4.32-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.32-cli-alpine",
         "${REGISTRY}/${REPO}:7.4.32-alpine",
     ]
 }

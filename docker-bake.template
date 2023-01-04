@@ -5,7 +5,3 @@ variable "REGISTRY" {
 variable "REPO" {
     default = "sunasteriskrnd/php"
 }
-
-group "default" {
-    targets = {{ targets }}
-}

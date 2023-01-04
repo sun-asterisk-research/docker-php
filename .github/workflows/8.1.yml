@@ -1,10 +1,14 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-name: Github CI
+name: 'PHP 8.1'
 
 on:
   pull_request:
+    paths:
+      - 8.1/**
   push:
+    paths:
+      - 8.1/**
 
 defaults:
   run:
@@ -43,36 +47,12 @@ jobs:
             "8_1_11-cli-alpine3_15",
             "8_1_11-fpm-alpine3_15",
             "8_1_11-nginx-alpine3_15",
-            "8_0_24-cli-bullseye",
-            "8_0_24-fpm-bullseye",
-            "8_0_24-nginx-bullseye",
-            "8_0_24-cli-buster",
-            "8_0_24-fpm-buster",
-            "8_0_24-nginx-buster",
-            "8_0_24-cli-alpine3_16",
-            "8_0_24-fpm-alpine3_16",
-            "8_0_24-nginx-alpine3_16",
-            "8_0_24-cli-alpine3_15",
-            "8_0_24-fpm-alpine3_15",
-            "8_0_24-nginx-alpine3_15",
-            "7_4_32-cli-bullseye",
-            "7_4_32-fpm-bullseye",
-            "7_4_32-nginx-bullseye",
-            "7_4_32-cli-buster",
-            "7_4_32-fpm-buster",
-            "7_4_32-nginx-buster",
-            "7_4_32-cli-alpine3_16",
-            "7_4_32-fpm-alpine3_16",
-            "7_4_32-nginx-alpine3_16",
-            "7_4_32-cli-alpine3_15",
-            "7_4_32-fpm-alpine3_15",
-            "7_4_32-nginx-alpine3_15",
           ]
     env:
-      ENABLE_DOCKERHUB: ${{ (secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN) && 'true' || 'false' }}
+      DOCKER_HUB_PUSH: ${{ (secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN) && 'true' || 'false' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
         with:
@@ -81,12 +61,12 @@ jobs:
         uses: docker/setup-buildx-action@v1
         with:
           version: v0.7.0
-      - name: Login to DockerHub
+      - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-        if: ${{ env.ENABLE_DOCKERHUB == 'true' }}
+        if: ${{ env.DOCKER_HUB_PUSH == 'true' }}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v2
         with:
@@ -100,7 +80,7 @@ jobs:
           set: |
             *.platform=linux/amd64,linux/arm,linux/arm64
           push: ${{ github.event_name == 'push' }}
-        if: ${{ env.ENABLE_DOCKERHUB == 'true' }}
+        if: ${{ env.DOCKER_HUB_PUSH == 'true' }}
       - name: Build and push to GitHub Container Registry
         uses: docker/bake-action@v2
         env:

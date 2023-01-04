@@ -4,6 +4,11 @@ set -e
 
 source generate_utils.sh
 
+# Generate a script that can be used with `eval` to set meta variables from a tag
+#
+# Usage: meta_from_full_tag <full tag>
+# e.g. meta_from_full_tag 8.1.11-alpine3.15
+#
 meta_from_full_tag() {
     local php_version variant distro_release
     IFS='-' read php_version variant distro_release <<< "$1"
@@ -26,6 +31,19 @@ local distro="$distro"
 EOF
 }
 
+distro_releases() {
+    echo $debian_releases $alpine_releases
+}
+
+variants() {
+    echo cli fpm nginx
+}
+
+# Generate dockerfile for a tag
+#
+# Usage: generate_dockerfile <full tag>
+# e.g. generate_dockerfile 8.1.9-alpine3.16
+#
 generate_dockerfile() {
     eval $(meta_from_full_tag $1)
 
@@ -82,14 +100,18 @@ generate_dockerfile() {
     done
 }
 
+# Generate all possible tags by performing matrix multiplication
+#
+# Usage: generate_tags <versions> <variants> <distros>
+# e.g. generate_tags "7.4.32 8.0.24 8.1.11" "bullseye buster"
+# would returns 7.4.32-bullseye 7.4.32-buster 8.0.24-bullseye 8.0.24-buster 8.1.11-bullseye 8.1.11-buster
+#
 generate_tags() {
-    local IFS=','
-
     local tags
 
     for version in $1; do
-        for variant in $2; do
-            for distro in $3; do
+        for distro in $3; do
+            for variant in $2; do
                 local tag=$(echo "$version-$variant-$distro" | sed -E -e 's/default(-|$)//g' | trim -)
                 if [ -z "$tag" ]; then
                     tag=latest
@@ -102,10 +124,18 @@ generate_tags() {
     echo "$tags"
 }
 
+# Normalize bake targets (replacing dots with underscores)
+#
 format_bake_target() {
     sed 's/\./_/g'
 }
 
+# Generate bake file targets for a tag
+# Includes major/minor version tag and short tags if PHP version or variant is the default one
+#
+# Usage: generate_bake_file_target <tag>
+# e.g. generate_bake_file_target 8.1.11-bullseye
+#
 generate_bake_file_target() {
     eval $(meta_from_full_tag $1)
 
@@ -140,7 +170,7 @@ generate_bake_file_target() {
     fi
 
     tags=$(
-        generate_tags "$version_tags" "$variant_tags" "$distro_tags" \
+        IFS=',' generate_tags "$version_tags" "$variant_tags" "$distro_tags" \
         | sed -E 's/(^|[[:space:]])/\1${REGISTRY}\/${REPO}:/g' \
         | format_list \
         | indent 1 4 \
@@ -160,6 +190,8 @@ generate_bake_file_target() {
         tags
 }
 
+# Generate docker-bake.hcl file
+#
 generate_bake_file() {
     local bake_file="docker-bake.hcl"
 
@@ -169,48 +201,52 @@ generate_bake_file() {
 
     local targets=$(echo "$@" | format_bake_target | format_list | indent 1 4 | trim)
 
-    tpl docker-bake.template targets >> $bake_file
+    tpl docker-bake.template >> $bake_file
 
     for target in $@; do
         generate_bake_file_target $target >> $bake_file
     done
 }
 
+# Generate workflow file for the specified PHP version
+#
+# Usage: generate_workflow <version>
+# e.g. generate_workflow 8.1.11
+# Would generate the workflow file .github/workflows/8.1.yml
+#
 generate_workflow() {
-    local workflow_file=".github/workflows/ci.yml"
+    local targets="$(generate_tags $1 "$(variants)" "$(distro_releases)" | format_bake_target | format_list 2 | indent 5 2 | trim)"
+    local platforms=$(echo $platforms | sed 's/ /,/g')
+    local php_minor=$(get_minor $1)
+    local workflow_file=".github/workflows/$php_minor.yml"
 
     echo "generating $workflow_file ..."
 
     mkdir -p .github/workflows
     write_warn_edit $workflow_file
 
-    local targets=$(echo "$@" | format_bake_target | format_list 2 | indent 5 2 | trim)
-    local platforms=$(echo $platforms | sed 's/ /,/g')
-
-    tpl ci.yml.template targets platforms >> $workflow_file
+    tpl ci.yml.template php_minor targets platforms >> $workflow_file
 }
 
+# Generate everything
+#
 generate_all() {
-    local distro_releases="$debian_releases $alpine_releases"
-
-    local targets=""
-
-    for version in $(echo "$php_versions" | sed -e 's/ /\n/g' | sort -r); do
-        for distro in $distro_releases; do
-            for variant in cli fpm nginx; do
-                targets="$targets $version-$variant-$distro"
-            done
-        done
-    done
+    local versions=$(echo "$php_versions" | sed -e 's/ /\n/g' | sort -r)
+    local targets=$(generate_tags "$versions" "$(variants)" "$(distro_releases)")
 
     for target in $targets; do
         generate_dockerfile $target
     done
 
     generate_bake_file $targets
-    generate_workflow $targets
+
+    for version in $php_versions; do
+        generate_workflow $version
+    done
 }
 
+# Clean up generated files
+#
 clean_all() {
     for version in $php_versions; do
         rm -rf $(get_minor $version)
