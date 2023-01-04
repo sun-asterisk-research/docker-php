@@ -1,6 +1,6 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-FROM php:8.1.14-fpm-bullseye
+FROM php:8.2.1-fpm-bullseye
 
 ENV RUN_DEPS \
     zlib1g \
@@ -43,13 +43,24 @@ RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 COPY rootfs /
 
+RUN set -x \
+    && groupadd --system --gid 101 nginx \
+    && useradd --system --no-create-home --uid 101 --gid nginx --groups www-data --home-dir /nonexistent --comment "nginx user" --shell /bin/false nginx
+
 RUN apt-get update \
-    && apt-get install -y fcgiwrap \
+    && apt-get install -o Dpkg::Options::="--force-confold" -y nginx gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
-# For backward compatibility
-RUN ln -s /usr/local/bin/docker-php-entrypoint /usr/local/bin/php-fpm-entrypoint
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
+
+RUN mkdir -p /run/nginx /run/php \
+    && ln -sf /dev/stdout /var/log/nginx/access.log \
+    && ln -sf /dev/stderr /var/log/nginx/error.log
+
+ENV DOCUMENT_ROOT=/var/www/html
+
+EXPOSE 80 443
 
 ENTRYPOINT [ "docker-php-entrypoint" ]
 
-CMD [ "php-fpm" ]
+CMD [ "/init", "nginx", "-g", "daemon off;" ]

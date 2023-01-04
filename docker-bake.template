@@ -1,7 +1,7 @@
 variable "REGISTRY" {
-    default = "docker.io"
+    default = "ghcr.io"
 }
 
 variable "REPO" {
-    default = "sunasteriskrnd/php"
+    default = "sun-asterisk-research/php"
 }

@@ -139,13 +139,16 @@ format_bake_target() {
 generate_bake_file_target() {
     eval $(meta_from_full_tag $1)
 
-    [ "$php_minor" = "$default_php_minor" ] && local is_default_version=true
-    [ "$variant" = "$default_variant" ] && local is_default_variant=true
-    [ "$distro_release" = "$default_distro_release" ] && local is_default_distro_release=true
+    local default_distro_release_var_name="default_${default_distro}_release"
+    local default_php_major_minor_var_name="default_php_${php_major}_version"
+
+    local default_php_minor="$(get_minor $default_php_version)"
+    local default_distro_release=${!default_distro_release_var_name}
+    local default_php_major_minor_version=${!default_php_major_minor_var_name}
 
     local version_tags="$php_minor,$php_version"
 
-    if eval [ "$php_minor" = \$"default_php_${php_major}_version" ]; then
+    if eval [ "$php_minor" = "$default_php_major_minor_version" ]; then
         version_tags="$php_major,$version_tags"
     fi
 
@@ -197,11 +200,10 @@ generate_bake_file() {
 
     echo "generating $bake_file ..."
 
-    write_warn_edit $bake_file
-
-    local targets=$(echo "$@" | format_bake_target | format_list | indent 1 4 | trim)
-
-    tpl docker-bake.template >> $bake_file
+    if [ "$APPEND" != "true" ]; then
+        write_warn_edit $bake_file
+        cat docker-bake.template >> $bake_file
+    fi
 
     for target in $@; do
         generate_bake_file_target $target >> $bake_file
@@ -253,17 +255,13 @@ clean_all() {
     done
 
     rm -f docker-bake.hcl
-    rm -f .github/workflows/ci.yml
+    rm -f .github/workflows/*.yml
 }
 
-eval $(get_versions)
-
-default_php_major="$(get_major $default_php_version)"
-default_php_minor="$(get_minor $default_php_version)"
-eval default_distro_release=\$"default_${default_distro}_release"
-
-if [ "$#" = 0 ]; then
-    generate_all
-elif [ "$1" = "clean" ]; then
+if [ "$1" = "clean" ]; then
+    eval $(parse_versions ${2:-versions.yml})
     clean_all
+else
+    eval $(parse_versions ${1:-versions.yml})
+    generate_all
 fi

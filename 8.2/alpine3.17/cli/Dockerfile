@@ -1,20 +1,20 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-FROM php:8.0.27-cli-bullseye
+FROM php:8.2.1-cli-alpine3.17
 
 ENV RUN_DEPS \
-    zlib1g \
-    libzip4 \
-    libpng16-16 \
-    libjpeg62-turbo \
-    libpq5
+    zlib \
+    libzip \
+    libpng \
+    libjpeg-turbo \
+    postgresql-libs
 
 ENV BUILD_DEPS \
-    zlib1g-dev \
+    zlib-dev \
     libzip-dev \
     libpng-dev \
-    libjpeg-dev \
-    libpq-dev
+    libjpeg-turbo-dev \
+    postgresql-dev
 
 ENV PHP_EXTENSIONS \
     opcache \
@@ -29,15 +29,14 @@ ENV PHP_EXTENSIONS \
 ENV PECL_EXTENSIONS \
     redis
 
-RUN apt-get update \
-    && apt-get install -y $RUN_DEPS $BUILD_DEPS \
+RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
     && docker-php-ext-configure gd --with-jpeg \
+    && pecl install $PECL_EXTENSIONS \
     && docker-php-ext-install -j "$(nproc)" $PHP_EXTENSIONS \
-    && apt-get purge -y --autoremove $BUILD_DEPS \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-enable $PECL_EXTENSIONS \
+    && apk del .build-deps
 
-RUN pecl install $PECL_EXTENSIONS \
-    && docker-php-ext-enable $PECL_EXTENSIONS
+RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
 RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint-base
 

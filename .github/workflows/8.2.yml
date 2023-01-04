@@ -1,14 +1,14 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-name: 'PHP 8.1'
+name: 'PHP 8.2'
 
 on:
   pull_request:
     paths:
-      - 8.1/**
+      - 8.2/**
   push:
     paths:
-      - 8.1/**
+      - 8.2/**
 
 defaults:
   run:
@@ -35,18 +35,18 @@ jobs:
       matrix:
         target:
           [
-            "8_1_14-cli-bullseye",
-            "8_1_14-fpm-bullseye",
-            "8_1_14-nginx-bullseye",
-            "8_1_14-cli-buster",
-            "8_1_14-fpm-buster",
-            "8_1_14-nginx-buster",
-            "8_1_14-cli-alpine3_17",
-            "8_1_14-fpm-alpine3_17",
-            "8_1_14-nginx-alpine3_17",
-            "8_1_14-cli-alpine3_16",
-            "8_1_14-fpm-alpine3_16",
-            "8_1_14-nginx-alpine3_16",
+            "8_2_1-cli-bullseye",
+            "8_2_1-fpm-bullseye",
+            "8_2_1-nginx-bullseye",
+            "8_2_1-cli-buster",
+            "8_2_1-fpm-buster",
+            "8_2_1-nginx-buster",
+            "8_2_1-cli-alpine3_17",
+            "8_2_1-fpm-alpine3_17",
+            "8_2_1-nginx-alpine3_17",
+            "8_2_1-cli-alpine3_16",
+            "8_2_1-fpm-alpine3_16",
+            "8_2_1-nginx-alpine3_16",
           ]
     env:
       DOCKER_HUB_PUSH: ${{ (secrets.DOCKER_HUB_USERNAME && secrets.DOCKER_HUB_TOKEN) && 'true' || 'false' }}

@@ -69,17 +69,32 @@ format_list() {
     echo "]"
 }
 
-get_versions() {
-    cat versions.yml \
+# Read the specified versions.yml file and generate a script which can be eval'ed to set corresponding variables
+#
+# Usage: parse_versions <versions.yml file>
+#
+parse_versions() {
+    cat $1 \
         | tr "\n" "\r" \
         | sed 's/\r-//g' \
         | tr '\r' '\n' \
         | sed -E \
             -e's/:[^:\/\/]/="/g' \
             -e 's/(.+)$/\1"/g' \
-            -e 's/ *=/=/g'
+            -e 's/ *=/=/g' \
+            -e "s/(^[^[:space:]])/$2\1/g"
 }
 
 write_warn_edit() {
     echo -e "# NOTE: This file was generated via generate.sh. Don't edit it directly\n" > $1
+}
+
+snake_case() {
+    sed_str='s/[^[:alnum:]]+/_/g'
+
+    if [ -z "$@" ]; then
+        sed -E "$sed_str" | tr '[:upper:]' '[:lower:]'
+    else
+        sed -E "$sed_str" <<< $@ | tr '[:upper:]' '[:lower:]'
+    fi
 }

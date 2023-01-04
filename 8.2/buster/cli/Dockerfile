@@ -1,6 +1,6 @@
 # NOTE: This file was generated via generate.sh. Don't edit it directly
 
-FROM php:8.1.14-fpm-bullseye
+FROM php:8.2.1-cli-buster
 
 ENV RUN_DEPS \
     zlib1g \
@@ -43,13 +43,9 @@ RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 COPY rootfs /
 
-RUN apt-get update \
-    && apt-get install -y fcgiwrap \
-    && rm -rf /var/lib/apt/lists/*
-
 # For backward compatibility
-RUN ln -s /usr/local/bin/docker-php-entrypoint /usr/local/bin/php-fpm-entrypoint
+RUN ln -s /usr/local/bin/docker-php-entrypoint /usr/local/bin/php-cli-entrypoint
 
 ENTRYPOINT [ "docker-php-entrypoint" ]
 
-CMD [ "php-fpm" ]
+CMD [ "php", "-a" ]
