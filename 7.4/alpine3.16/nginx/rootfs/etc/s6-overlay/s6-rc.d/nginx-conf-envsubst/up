@@ -1,0 +1,1 @@
+with-contenv /opt/nginx/nginx-conf-envsubst.sh

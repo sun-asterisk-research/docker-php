@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+
+sed -Ei 's/^(access.log)/; \1/' /usr/local/etc/php-fpm.d/*.conf
+
+exec php-fpm

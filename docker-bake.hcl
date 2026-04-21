@@ -464,6 +464,63 @@ target "8_1-nginx-alpine3_16" {
     inherits = ["8_1_14-nginx-alpine3_16"]
 }
 
+target "7_4_33-cli-alpine3_16" {
+    context = "./7.4/alpine3.16/cli"
+    cache-from = [
+        "${REGISTRY}/${REPO}:7.4-cli-alpine3.16"
+    ]
+    tags = [
+        "${REGISTRY}/${REPO}:7.4-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-cli-alpine",
+        "${REGISTRY}/${REPO}:7.4.33-cli-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.33-cli-alpine",
+        "${REGISTRY}/${REPO}:cli-alpine3.16",
+        "${REGISTRY}/${REPO}:cli-alpine",
+    ]
+}
+
+target "7_4-cli-alpine3_16" {
+    inherits = ["7_4_33-cli-alpine3_16"]
+}
+
+target "7_4_33-fpm-alpine3_16" {
+    context = "./7.4/alpine3.16/fpm"
+    cache-from = [
+        "${REGISTRY}/${REPO}:7.4-fpm-alpine3.16"
+    ]
+    tags = [
+        "${REGISTRY}/${REPO}:7.4-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-fpm-alpine",
+        "${REGISTRY}/${REPO}:7.4.33-fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.33-fpm-alpine",
+        "${REGISTRY}/${REPO}:fpm-alpine3.16",
+        "${REGISTRY}/${REPO}:fpm-alpine",
+    ]
+}
+
+target "7_4-fpm-alpine3_16" {
+    inherits = ["7_4_33-fpm-alpine3_16"]
+}
+
+target "7_4_33-nginx-alpine3_16" {
+    context = "./7.4/alpine3.16/nginx"
+    cache-from = [
+        "${REGISTRY}/${REPO}:7.4-nginx-alpine3.16"
+    ]
+    tags = [
+        "${REGISTRY}/${REPO}:7.4-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4-nginx-alpine",
+        "${REGISTRY}/${REPO}:7.4.33-nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:7.4.33-nginx-alpine",
+        "${REGISTRY}/${REPO}:nginx-alpine3.16",
+        "${REGISTRY}/${REPO}:nginx-alpine",
+    ]
+}
+
+target "7_4-nginx-alpine3_16" {
+    inherits = ["7_4_33-nginx-alpine3_16"]
+}
+
 target "8_0_27-cli-bullseye" {
     context = "./8.0/bullseye/cli"
     cache-from = [

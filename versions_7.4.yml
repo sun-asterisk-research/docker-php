@@ -1,0 +1,13 @@
+php_versions:
+- 7.4.33
+
+alpine_releases:
+- alpine3.16
+
+default_php_version: 7.4
+default_alpine_release: alpine3.16
+
+platforms:
+- linux/amd64
+- linux/arm
+- linux/arm64
