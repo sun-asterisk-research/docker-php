@@ -1,0 +1,3 @@
+
+# Debian bullseye is end-of-life and its packages moved to archive.debian.org
+RUN sed -i -e 's|deb.debian.org|archive.debian.org|g' /etc/apt/sources.list

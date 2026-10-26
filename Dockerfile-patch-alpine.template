@@ -1,0 +1,52 @@
+
+# Rebuild PHP from the image's own source with the upstream security backport applied,
+# reusing the official configure options and compiler flags
+COPY patches /usr/local/share/php-patches
+
+LABEL io.github.sun-asterisk-research.php.patches="{{ php_patch_commit }}"
+
+RUN set -eux \
+    && cd /usr/local/share/php-patches \
+    && echo "{{ php_patch_sha256 }}  {{ php_patch }}" | sha256sum -c - \
+    && apk add --no-cache --virtual .php-rebuild-deps \
+        $PHPIZE_DEPS \
+        argon2-dev \
+        coreutils \
+        curl-dev \
+        gnu-libiconv-dev \
+        libsodium-dev \
+        libxml2-dev \
+        linux-headers \
+        oniguruma-dev \
+        openssl-dev \
+        patch \
+        patchutils \
+        readline-dev \
+        sqlite-dev \
+    && rm -vf /usr/include/iconv.h \
+    && case "$PHP_VERSION" in 7.*) ln -sfv /usr/include/gnu-libiconv/*.h /usr/include/ ;; esac \
+    && configure_options="$(php-config --configure-options)" \
+    && build_provider="$(php -i | sed -n 's/^Build Provider => //p')" \
+    && if [ -n "$build_provider" ]; then export PHP_BUILD_PROVIDER="$build_provider" PHP_UNAME='Linux - Docker'; fi \
+    && export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" \
+    && docker-php-source extract \
+    && cd /usr/src/php \
+    && if [ -f /usr/local/share/php-patches/base/apply.sh ]; then sh /usr/local/share/php-patches/base/apply.sh; fi \
+    && patch -p1 < /usr/local/share/php-patches/{{ php_patch }} \
+    && eval "./configure $configure_options" \
+    && make -j "$(nproc)" \
+    && find -type f -name '*.a' -delete \
+    && make install \
+    && find /usr/local -type f -perm '/0111' -exec sh -euxc 'strip --strip-all "$@" || :' -- '{}' + \
+    && cd / \
+    && docker-php-source delete \
+    && runDeps="$( \
+        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
+            | tr ',' '\n' \
+            | sort -u \
+            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+    )" \
+    && apk add --no-cache $runDeps \
+    && apk del --no-network .php-rebuild-deps \
+    && rm -rf /tmp/pear ~/.pearrc \
+    && php --version

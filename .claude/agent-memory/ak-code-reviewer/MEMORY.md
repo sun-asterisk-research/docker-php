@@ -1,0 +1,1 @@
+- [Registry publishing state](project_registry_publishing_state.md) — Docker Hub dormant since 2023 via secret-name mismatch; GHCR cli-alpine3.16 points at 7.4

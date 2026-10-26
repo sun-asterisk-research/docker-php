@@ -1,0 +1,24 @@
+php_versions:
+- 8.1.34
+
+alpine_releases:
+- alpine3.22
+
+debian_releases:
+- bookworm
+
+php_patch: php-8.1.34-CVE-2026-109618-109619.patch
+php_patch_sha256: c85ad0fddcbff7f2318617eeaa54d271135463b5bf70a01228447e3ed78de96e
+php_patch_commit: 1d7dec178a094e6e75b229ce22754045f8c6070a
+
+default_php_version: 8.2
+default_php_8_version: 8.2
+default_variant: cli
+default_distro: debian
+default_alpine_release: alpine3.22
+default_debian_release: bookworm
+
+platforms:
+- linux/amd64
+- linux/arm
+- linux/arm64

@@ -1,5 +1,5 @@
 php_versions:
-- 8.0.27
+- 8.0.30
 
 alpine_releases:
 - alpine3.16
@@ -7,6 +7,10 @@ alpine_releases:
 debian_releases:
 - bullseye
 - buster
+
+php_patch: php-8.0.30-CVE-2026-109618-109619.patch
+php_patch_sha256: 534478c973cef6f493605b7af907f639a364912ee92c24598ddae44c3bc72d1c
+php_patch_commit: 82f8f31b16a035c1b67cc253e79f7cc288f4cc20
 
 default_php_version: 8.2
 default_php_8_version: 8.2
