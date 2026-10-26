@@ -62,6 +62,35 @@ generate_dockerfile() {
 
     write_warn_edit $dockerfile
 
+    tpl Dockerfile-from.template \
+        version=php_version \
+        variant=php_variant \
+        distro_release \
+        >> $dockerfile
+
+    # Release-specific base fixups, such as package mirrors for end-of-life releases
+    if [ -f "Dockerfile-from-$distro_release.template" ]; then
+        cat "Dockerfile-from-$distro_release.template" >> $dockerfile
+    fi
+
+    # Security backport, rebuilt into PHP before any extension is compiled against its headers
+    if [ -n "$php_patch" ]; then
+        tpl "Dockerfile-patch-$distro.template" \
+            php_patch \
+            php_patch_sha256 \
+            php_patch_commit \
+            >> $dockerfile
+
+        mkdir -p "$dir/patches"
+        cp "patches/$php_patch" "$dir/patches/"
+
+        # Patches the official image applied to its own build, replayed to keep the rebuild faithful
+        if [ -d "patches/base/$php_minor-$distro" ]; then
+            mkdir -p "$dir/patches/base"
+            cp -R "patches/base/$php_minor-$distro/." "$dir/patches/base/"
+        fi
+    fi
+
     for tpl in $(ls Dockerfile*.template | grep -E "Dockerfile-[0-9]+(-${variant})?(-${distro})?\.template"); do
         # Base Dockerfile
         tpl "$tpl" \
@@ -218,7 +247,7 @@ generate_bake_file() {
 #
 generate_workflow() {
     local targets="$(generate_tags $1 "$(variants)" "$(distro_releases)" | format_bake_target | format_list 2 | indent 5 2 | trim)"
-    local platforms=$(echo $platforms | sed 's/ /,/g')
+    local platforms="$(echo $platforms | format_list 2 | indent 5 2 | trim)"
     local php_minor=$(get_minor $1)
     local workflow_file=".github/workflows/$php_minor.yml"
 

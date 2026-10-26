@@ -1,21 +1,20 @@
 php_versions:
-- 8.1.14
-- 8.2.1
+- 8.2.35
 
 alpine_releases:
-- alpine3.17
-- alpine3.16
+- alpine3.24
+- alpine3.23
 
 debian_releases:
-- bullseye
-- buster
+- trixie
+- bookworm
 
 default_php_version: 8.2
 default_php_8_version: 8.2
 default_variant: cli
 default_distro: debian
-default_alpine_release: alpine3.17
-default_debian_release: bullseye
+default_alpine_release: alpine3.24
+default_debian_release: trixie
 
 platforms:
 - linux/amd64

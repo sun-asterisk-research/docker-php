@@ -2,6 +2,58 @@
 
 FROM php:7.4.33-fpm-alpine3.16
 
+# Rebuild PHP from the image's own source with the upstream security backport applied,
+# reusing the official configure options and compiler flags
+COPY patches /usr/local/share/php-patches
+
+LABEL io.github.sun-asterisk-research.php.patches="712e60f9edfd03f0960fc4fc3c2c375f42b90aa2"
+
+RUN set -eux \
+    && cd /usr/local/share/php-patches \
+    && echo "5fe57ca6ee96d59b36c6e0ca842843c50884f177bef1e85234cf669b577f5e48  php-7.4.33-CVE-2026-109618-109619.patch" | sha256sum -c - \
+    && apk add --no-cache --virtual .php-rebuild-deps \
+        $PHPIZE_DEPS \
+        argon2-dev \
+        coreutils \
+        curl-dev \
+        gnu-libiconv-dev \
+        libsodium-dev \
+        libxml2-dev \
+        linux-headers \
+        oniguruma-dev \
+        openssl-dev \
+        patch \
+        patchutils \
+        readline-dev \
+        sqlite-dev \
+    && rm -vf /usr/include/iconv.h \
+    && case "$PHP_VERSION" in 7.*) ln -sfv /usr/include/gnu-libiconv/*.h /usr/include/ ;; esac \
+    && configure_options="$(php-config --configure-options)" \
+    && build_provider="$(php -i | sed -n 's/^Build Provider => //p')" \
+    && if [ -n "$build_provider" ]; then export PHP_BUILD_PROVIDER="$build_provider" PHP_UNAME='Linux - Docker'; fi \
+    && export CFLAGS="$PHP_CFLAGS" CPPFLAGS="$PHP_CPPFLAGS" LDFLAGS="$PHP_LDFLAGS" \
+    && docker-php-source extract \
+    && cd /usr/src/php \
+    && if [ -f /usr/local/share/php-patches/base/apply.sh ]; then sh /usr/local/share/php-patches/base/apply.sh; fi \
+    && patch -p1 < /usr/local/share/php-patches/php-7.4.33-CVE-2026-109618-109619.patch \
+    && eval "./configure $configure_options" \
+    && make -j "$(nproc)" \
+    && find -type f -name '*.a' -delete \
+    && make install \
+    && find /usr/local -type f -perm '/0111' -exec sh -euxc 'strip --strip-all "$@" || :' -- '{}' + \
+    && cd / \
+    && docker-php-source delete \
+    && runDeps="$( \
+        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
+            | tr ',' '\n' \
+            | sort -u \
+            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
+    )" \
+    && apk add --no-cache $runDeps \
+    && apk del --no-network .php-rebuild-deps \
+    && rm -rf /tmp/pear ~/.pearrc \
+    && php --version
+
 ENV RUN_DEPS \
     zlib \
     libzip \
@@ -42,13 +94,25 @@ RUN mv /usr/local/bin/docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
 
 COPY rootfs /
 
+# Upload progress tracking is an RCE path (CVE-2026-115560) until PHP ships a fix
+RUN echo 'session.upload_progress.enabled = 0' > "$PHP_INI_DIR/conf.d/docker-php-session-upload-progress.ini"
+
+# Fail the build if any extension lost a runtime library, which PHP only reports as a startup warning
+RUN php -m > /dev/null && ! php -m 2>&1 | grep -iE 'warning|unable to load'
+
 RUN set -x \
     && addgroup -g 101 -S nginx \
     && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -g nginx -G www-data nginx
 
 RUN apk add --no-cache nginx gettext
 
-COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
+# Only the runtime paths: the dist also ships /lib and /include build leftovers,
+# and /lib is a symlink on merged-usr bases such as Debian bookworm
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /init /init
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /command /command
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /package /package
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /etc/s6-overlay /etc/s6-overlay
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /usr/bin /usr/bin
 
 RUN mkdir -p /run/nginx /run/php \
     && ln -sf /dev/stdout /var/log/nginx/access.log \

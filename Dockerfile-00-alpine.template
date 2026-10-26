@@ -1,4 +1,3 @@
-FROM php:{{ version }}-{{ variant }}-{{ distro_release }}
 
 ENV RUN_DEPS \
     zlib \

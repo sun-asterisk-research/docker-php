@@ -4,7 +4,11 @@ php_versions:
 alpine_releases:
 - alpine3.16
 
-default_php_version: 7.4
+php_patch: php-7.4.33-CVE-2026-109618-109619.patch
+php_patch_sha256: 5fe57ca6ee96d59b36c6e0ca842843c50884f177bef1e85234cf669b577f5e48
+php_patch_commit: 712e60f9edfd03f0960fc4fc3c2c375f42b90aa2
+
+default_php_version: 8.2
 default_alpine_release: alpine3.16
 
 platforms:

@@ -1,5 +1,11 @@
 
-COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 / /
+# Only the runtime paths: the dist also ships /lib and /include build leftovers,
+# and /lib is a symlink on merged-usr bases such as Debian bookworm
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /init /init
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /command /command
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /package /package
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /etc/s6-overlay /etc/s6-overlay
+COPY --from=crazymax/alpine-s6-dist:3.15-3.0.0.2 /usr/bin /usr/bin
 
 RUN mkdir -p /run/nginx /run/php \
     && ln -sf /dev/stdout /var/log/nginx/access.log \
